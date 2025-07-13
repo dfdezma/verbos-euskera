@@ -1,187 +1,223 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Práctica de Verbos en Euskera</title>
-
   <style>
-    /* Reset básico */
+    :root {
+      --primary: #0077cc;
+      --background: #f0f4f8;
+      --card-bg: #ffffff;
+      --text-dark: #333;
+      --text-light: #666;
+      --success: #2ecc71;
+      --error: #e74c3c;
+      --button-secondary: #95a5a6; /* Color secundario para botones */
+      --button-secondary-hover: #7f8c8d;
+    }
+
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     body {
-      background: #f5f7fa;
-      color: #333;
-      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--background);
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      min-height: 100vh;
       padding: 20px;
     }
-    h1, h2 {
-      margin-bottom: 20px;
-      color: #2c3e50;
+
+    .container, .auth-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 700px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px 25px;
       text-align: center;
     }
-    .hidden { display: none; }
-    #login-register, #menu, #exercise, #errors, #study {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 20px;
-      width: 320px;
-      max-width: 95vw;
-      margin-bottom: 20px;
+
+    /* Estilos específicos para el contenedor de autenticación */
+    .auth-container {
+        max-width: 400px; /* Un poco más estrecho para formularios de login/registro */
     }
-    form {
-      display: flex;
-      flex-direction: column;
+
+    h1 {
+      margin-top: 0;
+      color: var(--primary);
     }
-    label {
-      margin-bottom: 5px;
-      font-weight: 600;
-      color: #34495e;
+
+    p {
+      color: var(--text-dark);
+      font-size: 18px;
     }
-    input[type="email"], input[type="password"], input[type="text"] {
-      padding: 8px 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: border-color 0.3s ease;
-    }
-    input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
-      outline: none;
-      border-color: #2980b9;
-    }
-    button, input[type="submit"] {
-      background-color: #2980b9;
+
+    button {
+      background-color: var(--primary);
       color: white;
       border: none;
-      padding: 10px 15px;
-      margin-top: 8px;
-      border-radius: 5px;
-      font-weight: 600;
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px 5px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    button:hover, input[type="submit"]:hover {
-      background-color: #1f618d;
+
+    button:hover {
+      background-color: #005fa3;
     }
+
+    /* Estilos para botones secundarios */
     button.secondary {
-      background-color: #95a5a6;
-      margin-left: 10px;
+        background-color: var(--button-secondary);
+        margin-left: 10px;
     }
     button.secondary:hover {
-      background-color: #7f8c8d;
+        background-color: var(--button-secondary-hover);
     }
-    .feedback {
-      font-size: 0.9rem;
-      margin-top: -10px;
-      margin-bottom: 15px;
-      color: #e74c3c;
-      min-height: 18px;
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0; /* Asegura espacio alrededor */
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
     }
-    .feedback.correct {
-      color: #27ae60;
+
+    /* Ajuste para que los inputs en formularios de auth ocupen más ancho */
+    .auth-container input[type="email"],
+    .auth-container input[type="password"],
+    .auth-container input[type="text"] { /* Para el campo de nombre en registro */
+        width: 100%; /* Ocupan todo el ancho disponible */
+        margin-bottom: 15px; /* Más espacio entre campos */
     }
+
+    /* Labels para formularios de autenticación */
+    .auth-container label {
+        display: block; /* Cada label en su propia línea */
+        text-align: left;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    /* Password wrapper para el icono del ojo */
     .password-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%; /* Ocupa todo el ancho en auth-container */
+        margin-bottom: 15px; /* Espacio para el wrapper */
     }
+
     .password-wrapper input {
-      flex-grow: 1;
+        flex-grow: 1; /* El input crece para llenar el espacio */
+        margin-bottom: 0; /* Elimina el margen inferior del input individual */
     }
+
     .password-wrapper button {
-      position: absolute;
-      right: 8px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #2980b9;
-      font-size: 1.1rem;
+        position: absolute;
+        right: 8px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--primary);
+        font-size: 1.1rem;
+        padding: 0;
+        margin: 0; /* Eliminar márgenes del botón dentro del wrapper */
+    }
+
+    #feedback, .auth-feedback {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    #feedback.correct, .auth-feedback.correct {
+      color: var(--success);
+    }
+
+    #feedback.incorrect, .auth-feedback.error { /* Renombrado a .error para feedback de auth */
+      color: var(--error);
+    }
+
+    ul {
+      list-style: none;
       padding: 0;
+      text-align: left;
     }
-    #menu p {
-      margin-bottom: 15px;
-      font-weight: 600;
-      text-align: center;
-      font-size: 1.1rem;
+
+    li {
+      padding: 8px 0;
+      color: var(--text-light);
+      font-size: 16px;
     }
-    #menu button {
-      width: 100%;
-      margin-bottom: 10px;
+
+    .hidden {
+      display: none;
     }
-    #exercise #question {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      text-align: center;
-      font-weight: 600;
-      color: #2c3e50;
-      white-space: pre-line;
-    }
-    #exercise input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 1rem;
-      margin-bottom: 12px;
-    }
-    #feedback {
-      min-height: 24px;
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    #feedback.correct {
-      color: #27ae60;
-    }
-    #feedback.incorrect {
-      color: #e74c3c;
-    }
-    #errorList {
-      list-style: inside disc;
-      color: #34495e;
-    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 15px;
-      font-size: 0.95rem;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #2980b9;
-      color: white;
-    }
-    tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    /* Primera columna */
-    table th:first-child,
-    table td:first-child {
-      background-color: #2980b9;
-      color: white;
-    }
-    table th, table td {
-      text-align: center; /* centra horizontalmente */
-      vertical-align: middle; /* centra verticalmente */
+      margin: 20px 0;
     }
 
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    /* Formularios dentro del auth-container */
+    .auth-container form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch; /* Estira los elementos al ancho completo */
+    }
+
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      button {
+        width: 100%;
+        margin: 8px 0;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+      }
+    }
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc", // ¡Asegúrate de que esta API Key sea la de tu proyecto!
+      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc",
       authDomain: "verboseuskeraapp.firebaseapp.com",
       projectId: "verboseuskeraapp",
       storageBucket: "verboseuskeraapp.appspot.com",
@@ -194,488 +230,353 @@
   </script>
 </head>
 <body>
-  <section id="study" class="hidden" aria-live="polite"
-  style="max-width: 1000px; margin: 40px auto;
-         padding: 40px; font-family: 'Segoe UI', sans-serif;">
 
-    <h2 style="font-size: 2em; margin-bottom: 30px; text-align: center; color: #333;">Tabla de Conjugaciones: Presente y Pasado</h2>
-
-    <h3 style="color: #444; margin-top: 20px;">Presente</h3>
-    <table style="max-width: 600px; margin: 0 auto; border-collapse: collapse; font-size: 1em;">
-      <thead>
-        <tr style="background-color: #f2f2f2;">
-          <th style="padding: 12px; text-align: center; border: 1px solid #ccc;">→ / ↓</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">niri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><th style="background: #fafafa;">nik</th>   <td></td>        <td>dizut</td>   <td>diot</td>    <td></td>        <td>dizuet</td>   <td>diet</td></tr>
-        <tr><th style="background: #fafafa;">zuk</th>   <td>didazu</td>  <td></td>        <td>diozu</td>  <td>diguzu</td>  <td></td>         <td>diezu</td></tr>
-        <tr><th style="background: #fafafa;">hark</th>  <td>dit</td>     <td>dizu</td>    <td>dio</td>     <td>digu</td>     <td>dizue</td>    <td>die</td></tr>
-        <tr><th style="background: #fafafa;">guk</th>   <td></td>        <td>dizugu</td>  <td>diogu</td>   <td></td>        <td>dizuegu</td>  <td>diegu</td></tr>
-        <tr><th style="background: #fafafa;">zuek</th>  <td>didazue</td> <td></td>        <td>diozue</td> <td>diguzue</td> <td></td>         <td>diezue</td></tr>
-        <tr><th style="background: #fafafa;">haiek</th> <td>didate</td>  <td>dizute</td>  <td>diote</td>   <td>digute</td>   <td>dizuete</td>  <td>diete</td></tr>
-      </tbody>
-    </table>
-
-    <h3 style="color: #444; margin-top: 20px;">Pasado</h3>
-   <table style="max-width: 600px; margin: 0 auto; border-collapse: collapse; font-size: 1em;">
-      <thead>
-        <tr style="background-color: #f2f2f2;">
-          <th style="padding: 12px; text-align: center; border: 1px solid #ccc;">→ / ↓</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">niri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><th style="background: #f2f2f2;">nik</th>   <td></td>           <td>nizun</td>      <td>nion</td>     <td></td>          <td>nizuen</td>    <td>nien</td></tr>
-        <tr><th style="background: #f2f2f2;">zuk</th>   <td>zenidan</td>    <td></td>           <td>zenion</td>   <td>zenigun</td>   <td></td>          <td>zenien</td></tr>
-        <tr><th style="background: #f2f2f2;">hark</th>  <td>zidan</td>      <td>zizun</td>       <td>zion</td>     <td>zigun</td>     <td>zizuen</td>    <td>zien</td></tr>
-        <tr><th style="background: #f2f2f2;">guk</th>   <td></td>           <td>genizun</td>     <td>genion</td>   <td></td>          <td>genizuen</td>  <td>genien</td></tr>
-        <tr><th style="background: #f2f2f2;">zuek</th>  <td>zenidaten</td>  <td></td>            <td>zenioten</td> <td>zeniguten</td> <td></td>          <td>zenieten</td></tr>
-        <tr><th style="background: #f2f2f2;">haiek</th> <td>zidaten</td>    <td>zizuten</td>     <td>zioten</td>   <td>ziguten</td>   <td>zizueten</td>  <td>zieten</td></tr>
-      </tbody>
-    </table>
-
-    <div style="text-align: center; margin-top: 40px;">
-      <button onclick="showMenu()" class="secondary" style="padding: 12px 24px; font-size: 1em; background: #f0f0f0; border: 1px solid #ccc; border-radius: 8px; cursor: pointer;">
-        Volver al Menú
-      </button>
-    </div>
-  </section>
-
-  <h1>Práctica de Verbos en Euskera</h1>
-
-  <section id="login-register">
+<section id="auth-section" class="auth-container">
     <form id="loginForm" onsubmit="return loginUser(event)">
-      <h2>Iniciar sesión</h2>
-      <label for="loginUsername">Correo electrónico</label>
-      <input type="email" id="loginUsername" required placeholder="tu@email.com" />
-      <label for="loginPassword">Contraseña</label>
-      <div class="password-wrapper">
-        <input type="password" id="loginPassword" required placeholder="Contraseña" />
-        <button type="button" title="Mostrar contraseña" onclick="togglePassword('loginPassword', this)">👁️</button>
-      </div>
-      <input type="submit" value="Entrar" />
-      <p class="feedback" id="loginFeedback"></p>
-      <p>¿No tienes cuenta? <button type="button" onclick="showRegister()" class="secondary">Regístrate</button></p>
+        <h2>Iniciar Sesión</h2>
+        <label for="loginEmail">Correo electrónico</label>
+        <input type="email" id="loginEmail" required placeholder="tu@email.com">
+        <label for="loginPassword">Contraseña</label>
+        <div class="password-wrapper">
+            <input type="password" id="loginPassword" required placeholder="Contraseña">
+            <button type="button" title="Mostrar contraseña" onclick="togglePassword('loginPassword', this)">👁️</button>
+        </div>
+        <button type="submit">Entrar</button>
+        <p class="auth-feedback" id="loginFeedback"></p>
+        <p>¿No tienes cuenta? <button type="button" class="secondary" onclick="showRegister()">Regístrate</button></p>
     </form>
 
     <form id="registerForm" class="hidden" onsubmit="return registerUser(event)">
-      <h2>Registrarse</h2>
-      <label for="registerUsername">Correo electrónico</label>
-      <input type="email" id="registerUsername" required placeholder="tu@email.com" />
-      <label for="registerPassword">Contraseña</label>
-      <div class="password-wrapper">
-        <input type="password" id="registerPassword" required placeholder="Contraseña" />
-        <button type="button" title="Mostrar contraseña" onclick="togglePassword('registerPassword', this)">👁️</button>
-      </div>
-      <label for="registerPasswordConfirm">Confirmar contraseña</label>
-      <div class="password-wrapper">
-        <input type="password" id="registerPasswordConfirm" required placeholder="Repite la contraseña" />
-        <button type="button" title="Mostrar contraseña" onclick="togglePassword('registerPasswordConfirm', this)">👁️</button>
-      </div>
-      <input type="submit" value="Registrar" />
-      <p class="feedback" id="registerFeedback"></p>
-      <p>¿Ya tienes cuenta? <button type="button" onclick="showLogin()" class="secondary">Inicia sesión</button></p>
+        <h2>Registrarse</h2>
+        <label for="registerName">Nombre (opcional)</label>
+        <input type="text" id="registerName" placeholder="Tu nombre">
+        <label for="registerEmail">Correo electrónico</label>
+        <input type="email" id="registerEmail" required placeholder="tu@email.com">
+        <label for="registerPassword">Contraseña</label>
+        <div class="password-wrapper">
+            <input type="password" id="registerPassword" required placeholder="Contraseña">
+            <button type="button" title="Mostrar contraseña" onclick="togglePassword('registerPassword', this)">👁️</button>
+        </div>
+        <label for="registerConfirmPassword">Confirmar contraseña</label>
+        <div class="password-wrapper">
+            <input type="password" id="registerConfirmPassword" required placeholder="Repite la contraseña">
+            <button type="button" title="Mostrar contraseña" onclick="togglePassword('registerConfirmPassword', this)">👁️</button>
+        </div>
+        <button type="submit">Registrar</button>
+        <p class="auth-feedback" id="registerFeedback"></p>
+        <p>¿Ya tienes cuenta? <button type="button" class="secondary" onclick="showLogin()">Inicia sesión</button></p>
     </form>
-  </section>
+</section>
 
-  <section id="menu" class="hidden">
-    <p>¡Bienvenido! Selecciona una opción:</p>
-    <button onclick="startExercise()">Practicar Conjugaciones</button>
-    <button onclick="showErrors()">Mostrar Errores</button>
-    <button onclick="showStudy()">Ver Tabla de Conjugaciones</button>
-    <button onclick="logout()">Cerrar sesión</button>
-  </section>
+<section id="main-content" class="container hidden">
+  <h1>Práctica de Verbos en Euskera</h1>
+  <p><strong>Racha de aciertos:</strong> <span id="streak">0</span></p>
 
+  <div id="menu">
+    <button onclick="startExercise('present')">Presente singular</button>
+    <button onclick="startExercise('past')">Pasado singular</button>
+    <button onclick="showErrors()">Ver errores</button>
+    <button onclick="showStudy()">📘 Estudiar</button>
+    <button onclick="logout()" class="secondary">Cerrar Sesión</button>
+  </div>
 
-  <section id="exercise" class="hidden" aria-live="polite">
-    <h2>Ejercicio de Conjugación</h2>
-    <div id="question"></div>
-    <form id="answerForm" onsubmit="return checkAnswer(event)">
-      <input type="text" id="answerInput" placeholder="Escribe la conjugación correcta" autocomplete="off" required />
-      <input type="submit" value="Comprobar" />
-    </form>
-    <div id="feedback" role="alert"></div>
-    <button id="nextButton" class="hidden" onclick="nextQuestion()">Siguiente</button>
-    <button onclick="showMenu()" class="secondary">Volver al Menú</button>
-  </section>
+  <div id="exercise" class="hidden">
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Escribe tu respuesta">
+    <div>
+      <button onclick="checkAnswer()">Enviar</button>
+    </div>
+    <p id="feedback"></p>
+    <div>
+      <button onclick="nextQuestion()">Siguiente</button>
+      <button onclick="returnToMenu()">Volver al menú</button>
+    </div>
+  </div>
 
-  <section id="errors" class="hidden" aria-live="polite">
-    <h2>Errores Cometidos</h2>
+  <div id="errors" class="hidden">
+    <h2>Errores más comunes</h2>
     <ul id="errorList"></ul>
-    <button onclick="clearErrors()">Borrar Errores</button>
-    <button onclick="showMenu()" class="secondary">Volver al Menú</button>
-  </section>
+    <button onclick="returnToMenu()">Volver al menú</button>
+  </div>
 
-  <script>
-    // Elementos
-    const loginRegisterSection = document.getElementById('login-register');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const loginFeedback = document.getElementById('loginFeedback');
-    const registerFeedback = document.getElementById('registerFeedback');
-    const menuSection = document.getElementById('menu');
-    const exerciseSection = document.getElementById('exercise');
-    const questionDiv = document.getElementById('question');
-    const answerForm = document.getElementById('answerForm');
-    const answerInput = document.getElementById('answerInput');
-    const feedbackDiv = document.getElementById('feedback');
-    const nextButton = document.getElementById('nextButton');
-    const errorsSection = document.getElementById('errors');
-    const errorList = document.getElementById('errorList');
-    const studySection = document.getElementById('study');
+  <div id="study" class="hidden">
+    <h2>Tabla de Conjugaciones</h2>
+    <h3>Presente</h3>
+    <div id="presentTable"></div>
+    <h3>Pasado</h3>
+    <div id="pastTable"></div>
+    <button onclick="returnToMenu()">Volver al menú</button>
+  </div>
+</section>
 
-    function showStudy() {
-      menuSection.classList.add('hidden');
-      exerciseSection.classList.add('hidden');
-      errorsSection.classList.add('hidden');
-      studySection.classList.remove('hidden');
-    }
+<script>
+// Datos verbales
+const s_present = {
+  "nik,zuri": "dizut", "nik,hari": "diot", "nik,zuei": "dizuet", "nik,haiei": "diet",
+  "zuk,niri": "didazu", "zuk,hari": "diozu", "zuk,guri": "diguzu", "zuk,haiei": "diezu",
+  "hark,niri": "dit", "hark,zuri": "dizu", "hark,hari": "dio", "hark,guri": "digu",
+  "hark,zuei": "dizue", "hark,haiei": "die",
+  "guk,zuri": "dizugu", "guk,hari": "diogu", "guk,zuei": "dizuegu", "guk,haiei": "diegu",
+  "zuek,niri": "didazue", "zuek,hari": "diozue", "zuek,guri": "diguzue", "zuek,haiei": "diezue",
+  "haiek,niri": "didate", "haiek,zuri": "dizute", "haiek,hari": "diote", "haiek,guri": "digute",
+  "haiek,zuei": "dizuete", "haiek,haiei": "diete"
+};
 
-    // No se usa actualmente, pero podría ser útil si implementas un botón de "ocultar estudio"
-    function hideStudy() {
-      studySection.classList.add('hidden');
-    }
+const s_past = {
+  "nik,zuri": "nizun", "nik,hari": "nion", "nik,zuei": "nizuen", "nik,haiei": "nien",
+  "zuk,niri": "zenidan", "zuk,hari": "zenion", "zuk,guri": "zenigun", "zuk,haiei": "zenien",
+  "hark,niri": "zidan", "hark,zuri": "zizun", "hark,hari": "zion", "hark,guri": "zigun",
+  "hark,zuei": "zizuen", "hark,haiei": "zien",
+  "guk,zuri": "genizun", "guk,hari": "genion", "guk,zuei": "genizuen", "guk,haiei": "genien",
+  "zuek,niri": "zenidaten", "zuek,hari": "zenioten", "zuek,guri": "zeniguten", "zuek,haiei": "zenieten",
+  "haiek,niri": "zidaten", "haiek,zuri": "zizuten", "haiek,hari": "zioten", "haiek,guri": "ziguten",
+  "haiek,zuei": "zizueten", "haiek,haiei": "zieten"
+};
 
+let currentSet = {};
+let currentKey = '';
+let streak = 0;
+let errors = JSON.parse(localStorage.getItem('verbErrors')) || {}; // Usar un nombre más específico para evitar conflictos
 
-    // Firebase auth handlers
-    function loginUser(e) {
-      e.preventDefault();
-      loginFeedback.textContent = ""; // Limpiar mensajes de feedback previos
-      const email = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
+// Referencias a elementos del DOM
+const authSection = document.getElementById('auth-section');
+const mainContent = document.getElementById('main-content');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const loginFeedback = document.getElementById('loginFeedback');
+const registerFeedback = document.getElementById('registerFeedback');
+const menuSection = document.getElementById('menu'); // Asegúrate de tener este ID en tu HTML
+const exerciseSection = document.getElementById('exercise');
+const questionElement = document.getElementById('question');
+const answerInput = document.getElementById('answer');
+const feedbackElement = document.getElementById('feedback');
+const streakElement = document.getElementById('streak');
+const errorsSection = document.getElementById('errors');
+const errorList = document.getElementById('errorList');
+const studySection = document.getElementById('study');
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          loginRegisterSection.classList.add('hidden');
-          menuSection.classList.remove('hidden');
-          loginForm.reset(); // Limpiar formulario después de éxito
-          console.log("Usuario ha iniciado sesión con éxito:", email);
-        })
-        .catch(error => {
-          loginFeedback.textContent = "Error al iniciar sesión: " + error.message;
-          console.error("Error de inicio de sesión:", error);
-        });
-      return false; // Prevenir el envío tradicional del formulario
-    }
+// --- Funciones de Autenticación ---
 
-    function registerUser(e) {
-      e.preventDefault();
-      registerFeedback.textContent = ""; // Limpiar mensajes de feedback previos
-      const email = document.getElementById('registerUsername').value.trim();
-      const password = document.getElementById('registerPassword').value.trim();
-      const confirmPassword = document.getElementById('registerPasswordConfirm').value.trim();
+function showLogin() {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+    loginFeedback.textContent = '';
+    registerFeedback.textContent = '';
+}
 
-      if (password !== confirmPassword) {
-        registerFeedback.textContent = "Las contraseñas no coinciden";
-        return false;
-      }
-      if (password.length < 6) {
-        registerFeedback.textContent = "La contraseña debe tener al menos 6 caracteres";
-        return false;
-      }
+function showRegister() {
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+    loginFeedback.textContent = '';
+    registerFeedback.textContent = '';
+}
 
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          registerFeedback.textContent = "Usuario registrado con éxito. Por favor, inicia sesión.";
-          registerForm.reset(); // Limpiar formulario después de éxito
-          showLogin(); // Mostrar el formulario de inicio de sesión
-          console.log("Usuario registrado con éxito:", email);
-        })
-        .catch(error => {
-          registerFeedback.textContent = "Error al registrar usuario: " + error.message;
-          console.error("Error de registro:", error);
-        });
-      return false; // Prevenir el envío tradicional del formulario
-    }
-
-    function logout() {
-      auth.signOut().then(() => {
-        menuSection.classList.add('hidden');
-        exerciseSection.classList.add('hidden');
-        errorsSection.classList.add('hidden');
-        studySection.classList.add('hidden'); // Ocultar sección de estudio
-        loginRegisterSection.classList.remove('hidden'); // Mostrar la pantalla de login/registro
-        console.log("Sesión cerrada con éxito.");
-      }).catch(error => {
-        console.error("Error al cerrar sesión:", error);
-      });
-    }
-
-    function showRegister() {
-      loginForm.classList.add('hidden');
-      registerForm.classList.remove('hidden');
-      loginFeedback.textContent = "";
-      registerFeedback.textContent = "";
-    }
-
-    function showLogin() {
-      loginForm.classList.remove('hidden');
-      registerForm.classList.add('hidden');
-      loginFeedback.textContent = "";
-      registerFeedback.textContent = "";
-    }
-
-    function togglePassword(inputId, btn) {
-      const input = document.getElementById(inputId);
-      if (input.type === "password") {
+function togglePassword(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
         input.type = "text";
-        btn.textContent = "🙈"; // Icono de ojo tachado
-      } else {
+        btn.textContent = "🙈";
+    } else {
         input.type = "password";
-        btn.textContent = "👁️"; // Icono de ojo
-      }
+        btn.textContent = "👁️";
+    }
+}
+
+async function loginUser(event) {
+    event.preventDefault();
+    loginFeedback.textContent = '';
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+        // Si el login es exitoso, onAuthStateChanged manejará la visibilidad
+        console.log('Inicio de sesión exitoso:', email);
+        loginForm.reset(); // Limpiar el formulario
+    } catch (error) {
+        console.error('Error al iniciar sesión:', error.code, error.message);
+        loginFeedback.textContent = `Error: ${error.message}`;
+        loginFeedback.className = 'auth-feedback error'; // Asegurarse de que el estilo de error se aplique
+    }
+    return false; // Prevenir el envío tradicional del formulario
+}
+
+async function registerUser(event) {
+    event.preventDefault();
+    registerFeedback.textContent = '';
+    // const name = document.getElementById('registerName').value.trim(); // Si se guarda en BD externa
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value.trim();
+    const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+
+    if (password !== confirmPassword) {
+        registerFeedback.textContent = 'Las contraseñas no coinciden.';
+        registerFeedback.className = 'auth-feedback error';
+        return false;
+    }
+    if (password.length < 6) {
+        registerFeedback.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+        registerFeedback.className = 'auth-feedback error';
+        return false;
     }
 
-    // Datos verbales - estructura con pares de pronombres como claves (string con guion)
-    // Se ha completado 'izan' para que incluya todas las combinaciones de la tabla
-    const s_present = {
-      'izan': {
-        'nik-zuri': ['dizut', 0],
-        'nik-hari': ['diot', 0],
-        'nik-zuei': ['dizuet', 0],
-        'nik-haiei': ['diet', 0],
-        'zuk-niri': ['didazu', 0],
-        'zuk-hari': ['diozu', 0],
-        'zuk-guri': ['diguzu', 0],
-        'zuk-haiei': ['diezu', 0],
-        'hark-niri': ['dit', 0],
-        'hark-zuri': ['dizu', 0],
-        'hark-hari': ['dio', 0],
-        'hark-guri': ['digu', 0],
-        'hark-zuei': ['dizue', 0],
-        'hark-haiei': ['die', 0],
-        'guk-zuri': ['dizugu', 0],
-        'guk-hari': ['diogu', 0],
-        'guk-zuei': ['dizuegu', 0],
-        'guk-haiei': ['diegu', 0],
-        'zuek-niri': ['didazue', 0],
-        'zuek-hari': ['diozue', 0],
-        'zuek-guri': ['diguzue', 0],
-        'zuek-haiei': ['diezue', 0],
-        'haiek-niri': ['didate', 0],
-        'haiek-zuri': ['dizute', 0],
-        'haiek-hari': ['diote', 0],
-        'haiek-guri': ['digute', 0],
-        'haiek-zuei': ['dizuete', 0],
-        'haiek-haiei': ['diete', 0]
-      }
-    };
-
-    // Añadido el objeto para el pasado, con los datos completos de la tabla
-    const s_past = {
-      'izan': {
-        'nik-zuri': ['nizun', 0],
-        'nik-hari': ['nion', 0],
-        'nik-zuei': ['nizuen', 0],
-        'nik-haiei': ['nien', 0],
-        'zuk-niri': ['zenidan', 0],
-        'zuk-hari': ['zenion', 0],
-        'zuk-guri': ['zenigun', 0],
-        'zuk-haiei': ['zenien', 0],
-        'hark-niri': ['zidan', 0],
-        'hark-zuri': ['zizun', 0],
-        'hark-hari': ['zion', 0],
-        'hark-guri': ['zigun', 0],
-        'hark-zuei': ['zizuen', 0],
-        'hark-haiei': ['zien', 0],
-        'guk-zuri': ['genizun', 0],
-        'guk-hari': ['genion', 0],
-        'guk-zuei': ['genizuen', 0],
-        'guk-haiei': ['genien', 0],
-        'zuek-niri': ['zenidaten', 0],
-        'zuek-hari': ['zenioten', 0],
-        'zuek-guri': ['zeniguten', 0],
-        'zuek-haiei': ['zenieten', 0],
-        'haiek-niri': ['zidaten', 0],
-        'haiek-zuri': ['zizuten', 0],
-        'haiek-hari': ['zioten', 0],
-        'haiek-guri': ['ziguten', 0],
-        'haiek-zuei': ['zizueten', 0],
-        'haiek-haiei': ['zieten', 0]
-      }
-    };
-
-    // Puedes agregar otros tiempos y verbos aquí...
-
-    // Etiquetas para mostrar los pronombres
-    const pronounLabels = {
-      'nik-zuri': 'nik → zuri',
-      'nik-hari': 'nik → hari',
-      'nik-zuei': 'nik → zuei',
-      'nik-haiei': 'nik → haiei',
-      'zuk-niri': 'zuk → niri',
-      'zuk-hari': 'zuk → hari',
-      'zuk-guri': 'zuk → guri',
-      'zuk-haiei': 'zuk → haiei',
-      'hark-niri': 'hark → niri',
-      'hark-zuri': 'hark → zuri',
-      'hark-hari': 'hark → hari',
-      'hark-guri': 'hark → guri',
-      'hark-zuei': 'hark → zuei',
-      'hark-haiei': 'hark → haiei',
-      'guk-niri': 'guk → niri', // Añadido, aunque vacío en la tabla
-      'guk-zuri': 'guk → zuri',
-      'guk-hari': 'guk → hari',
-      'guk-guri': 'guk → guri', // Añadido, aunque vacío en la tabla
-      'guk-zuei': 'guk → zuei',
-      'guk-haiei': 'guk → haiei',
-      'zuek-niri': 'zuek → niri',
-      'zuek-zuri': 'zuek → zuri', // Añadido, aunque vacío en la tabla
-      'zuek-hari': 'zuek → hari',
-      'zuek-guri': 'zuek → guri',
-      'zuek-zuei': 'zuek → zuei', // Añadido, aunque vacío en la tabla
-      'zuek-haiei': 'zuek → haiei',
-      'haiek-niri': 'haiek → niri',
-      'haiek-zuri': 'haiek → zuri',
-      'haiek-hari': 'haiek → hari',
-      'haiek-guri': 'haiek → guri',
-      'haiek-zuei': 'haiek → zuei',
-      'haiek-haiei': 'haiek → haiei'
-    };
-
-
-    // Variables estado ejercicio
-    let currentVerb = null;
-    let currentPairKey = null;
-    let currentTense = null; // Para saber si es presente o pasado
-
-    // Errores guardados en localStorage
-    let errors = JSON.parse(localStorage.getItem('errors')) || [];
-
-    // Funciones ejercicio
-
-    function getRandom(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
+    try {
+        await auth.createUserWithEmailAndPassword(email, password);
+        console.log('Registro exitoso:', email);
+        registerFeedback.textContent = '¡Registro exitoso! Por favor, inicia sesión.';
+        registerFeedback.className = 'auth-feedback correct';
+        registerForm.reset(); // Limpiar el formulario
+        showLogin(); // Mostrar el formulario de login después del registro
+    } catch (error) {
+        console.error('Error al registrar:', error.code, error.message);
+        registerFeedback.textContent = `Error: ${error.message}`;
+        registerFeedback.className = 'auth-feedback error';
     }
+    return false; // Prevenir el envío tradicional del formulario
+}
 
-    function startExercise() {
-      menuSection.classList.add('hidden');
-      errorsSection.classList.add('hidden');
-      studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
-      exerciseSection.classList.remove('hidden');
-      nextQuestion();
-    }
-
-    function nextQuestion() {
-      feedbackDiv.textContent = '';
-      feedbackDiv.className = '';
-      answerInput.value = '';
-      nextButton.classList.add('hidden');
-      answerInput.disabled = false;
-      answerInput.focus();
-
-      // Elegir aleatoriamente entre presente y pasado
-      const tenses = ['present', 'past'];
-      currentTense = getRandom(tenses);
-      const selectedTenseData = (currentTense === 'present') ? s_present : s_past;
-
-      currentVerb = getRandom(Object.keys(selectedTenseData));
-      const pairs = Object.keys(selectedTenseData[currentVerb]);
-      currentPairKey = getRandom(pairs);
-
-      const tenseLabel = (currentTense === 'present') ? 'Presente' : 'Pasado';
-      // Uso de template literals con backticks
-      questionDiv.textContent = `Verbo: "${currentVerb}" (${tenseLabel})\nConjuga para: ${pronounLabels[currentPairKey] || currentPairKey}`;
-    }
-
-    function checkAnswer(e) {
-      e.preventDefault();
-      const userAnswer = answerInput.value.trim().toLowerCase();
-      const selectedTenseData = (currentTense === 'present') ? s_present : s_past;
-      const correctAnswer = selectedTenseData[currentVerb][currentPairKey][0].toLowerCase();
-
-      if (userAnswer === correctAnswer) {
-        feedbackDiv.textContent = "¡Correcto! 🎉";
-        feedbackDiv.className = "feedback correct"; // Añadir clase 'feedback' también
-        nextButton.classList.remove('hidden');
-        answerInput.disabled = true;
-      } else {
-        // Uso de template literals con backticks
-        feedbackDiv.textContent = `Incorrecto. La respuesta correcta es: "${correctAnswer}"`;
-        feedbackDiv.className = "feedback incorrect"; // Añadir clase 'feedback' también
-
-        // Guardar error para mostrar después
-        errors.push({
-          verbo: currentVerb,
-          tiempo: currentTense === 'present' ? 'Presente' : 'Pasado', // Guardar el tiempo verbal
-          pronombres: pronounLabels[currentPairKey] || currentPairKey,
-          respuestaCorrecta: correctAnswer,
-          respuestaUsuario: userAnswer
-        });
-        localStorage.setItem('errors', JSON.stringify(errors));
-
-        nextButton.classList.remove('hidden');
-        answerInput.disabled = true;
-      }
-    }
-
-    function showMenu() {
-      exerciseSection.classList.add('hidden');
-      errorsSection.classList.add('hidden');
-      studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
-      menuSection.classList.remove('hidden');
-    }
-
-    // Mostrar errores
-    function showErrors() {
-      menuSection.classList.add('hidden');
-      exerciseSection.classList.add('hidden');
-      studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
-      errorsSection.classList.remove('hidden');
-
-      errorList.innerHTML = '';
-      if (errors.length === 0) {
-        errorList.innerHTML = '<li>No has cometido errores aún. ¡Bien hecho!</li>';
-      } else {
-        errors.forEach((err) => {
-          const li = document.createElement('li');
-          // Uso de template literals con backticks
-          li.textContent = `Verbo "${err.verbo}" (${err.tiempo}), ${err.pronombres}: respuesta correcta "${err.respuestaCorrecta}", tú escribiste "${err.respuestaUsuario}"`;
-          errorList.appendChild(li);
-        });
-      }
-    }
-
-    function clearErrors() {
-      if (confirm('¿Seguro que quieres borrar todos los errores?')) {
-        errors = [];
-        localStorage.removeItem('errors');
-        showErrors(); // Volver a renderizar la lista vacía
-      }
-    }
-
-    // Escuchar el submit de respuesta
-    answerForm.addEventListener('submit', checkAnswer);
-
-    // Escuchar click siguiente
-    nextButton.addEventListener('click', nextQuestion);
-
-    // Mostrar login al cargar si no hay usuario
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        loginRegisterSection.classList.add('hidden');
-        menuSection.classList.remove('hidden');
-      } else {
-        loginRegisterSection.classList.remove('hidden');
-        menuSection.classList.add('hidden');
-        exerciseSection.classList.add('hidden');
-        errorsSection.classList.add('hidden');
-        studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
-      }
+function logout() {
+    auth.signOut().then(() => {
+        console.log('Sesión cerrada correctamente.');
+        // onAuthStateChanged se encargará de ocultar el main-content y mostrar auth-section
+    }).catch((error) => {
+        console.error('Error al cerrar sesión:', error);
     });
-  </script>
+}
+
+// --- Funciones de Práctica ---
+
+function startExercise(type) {
+  currentSet = (type === 'present') ? s_present : s_past;
+  document.getElementById('menu').classList.add('hidden');
+  exerciseSection.classList.remove('hidden');
+  nextQuestion();
+}
+
+function nextQuestion() {
+  const keys = Object.keys(currentSet);
+  currentKey = keys[Math.floor(Math.random() * keys.length)];
+  questionElement.textContent = `Conjuga: ${currentKey.replace(',', ', ')}`;
+  answerInput.value = '';
+  feedbackElement.textContent = '';
+  feedbackElement.className = ''; // Limpiar clases
+}
+
+function checkAnswer() {
+  const input = answerInput.value.trim().toLowerCase();
+  const correct = currentSet[currentKey].toLowerCase();
+
+  if (input === correct) {
+    streak++;
+    feedbackElement.textContent = '✅ ¡Respuesta correcta!';
+    feedbackElement.className = 'feedback correct'; // Asegurar clase 'feedback'
+  } else {
+    streak = 0;
+    errors[currentKey] = (errors[currentKey] || 0) + 1;
+    localStorage.setItem('verbErrors', JSON.stringify(errors)); // Guardar errores
+    feedbackElement.textContent = `❌ Incorrecto. La respuesta era: ${correct}`;
+    feedbackElement.className = 'feedback incorrect'; // Asegurar clase 'feedback'
+  }
+  streakElement.textContent = streak;
+}
+
+function returnToMenu() {
+  exerciseSection.classList.add('hidden');
+  errorsSection.classList.add('hidden');
+  studySection.classList.add('hidden');
+  menuSection.classList.remove('hidden');
+}
+
+function showErrors() {
+  const errorList = document.getElementById('errorList');
+  errorList.innerHTML = '';
+  const sorted = Object.entries(errors).sort((a, b) => b[1] - a[1]); // Ordenar por cantidad de errores
+  
+  if (sorted.length === 0) {
+      errorList.innerHTML = '<li>¡No has cometido errores aún!</li>';
+  } else {
+      sorted.slice(0, 5).forEach(([key, count]) => { // Mostrar top 5 errores
+          const li = document.createElement('li');
+          li.textContent = `"${key.replace(',', ', ')}": ${count} veces`;
+          errorList.appendChild(li);
+      });
+  }
+
+  document.getElementById('menu').classList.add('hidden');
+  errorsSection.classList.remove('hidden');
+}
+
+function showStudy() {
+  document.getElementById('menu').classList.add('hidden');
+  studySection.classList.remove('hidden');
+  generateTables();
+}
+
+function generateTables() {
+  generateTable(s_present, "presentTable");
+  generateTable(s_past, "pastTable");
+}
+
+function generateTable(data, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = ""; // Limpiar contenido previo
+
+  // Obtener todos los sujetos y objetos únicos para encabezados
+  const subjects = new Set();
+  const objects = new Set();
+  for (const key of Object.keys(data)) {
+    const [subj, obj] = key.split(',');
+    subjects.add(subj);
+    objects.add(obj);
+  }
+
+  const sortedSubjects = Array.from(subjects).sort();
+  const sortedObjects = Array.from(objects).sort();
+
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const headRow = document.createElement('tr');
+  headRow.innerHTML = '<th>→ / ↓</th>' + sortedObjects.map(obj => `<th>${obj}</th>`).join('');
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  for (const subj of sortedSubjects) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<th>${subj}</th>` + sortedObjects.map(obj => {
+      const key = `${subj},${obj}`;
+      return `<td>${data[key] || '-'}</td>`; // Mostrar '-' si no hay conjugación
+    }).join('');
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
+  container.appendChild(table);
+}
+
+// --- Inicialización: Comprobar estado de autenticación al cargar ---
+auth.onAuthStateChanged(user => {
+    if (user) {
+        // Usuario logueado: mostrar el contenido principal
+        authSection.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        console.log('Usuario autenticado:', user.email);
+        // Opcional: Cargar errores del usuario si los tuvieras en una BD
+    } else {
+        // Usuario no logueado: mostrar la sección de autenticación
+        authSection.classList.remove('hidden');
+        mainContent.classList.add('hidden');
+        console.log('Usuario no autenticado.');
+        // Asegurarse de que el formulario de login esté visible por defecto
+        showLogin();
+    }
+});
+
+// Generar tablas de estudio al cargar por primera vez (aunque estén ocultas)
+// O podrías llamarlas solo cuando showStudy() se ejecuta
+document.addEventListener('DOMContentLoaded', generateTables);
+
+</script>
 
 </body>
 </html>
