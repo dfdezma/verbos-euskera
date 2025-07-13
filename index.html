@@ -227,7 +227,7 @@
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.firestore(); // Nuevo: Inicializar Firestore
+    const db = firebase.firestore();
   </script>
 </head>
 <body>
@@ -271,6 +271,7 @@
 
 <section id="main-content" class="container hidden">
   <h1>Práctica de Verbos en Euskera</h1>
+  <p>¡Bienvenid@, <span id="usernameDisplay"></span>!</p>
   <p><strong>Racha de aciertos:</strong> <span id="streak">0</span></p>
 
   <div id="menu">
@@ -355,6 +356,7 @@ const streakElement = document.getElementById('streak');
 const errorsSection = document.getElementById('errors');
 const errorList = document.getElementById('errorList');
 const studySection = document.getElementById('study');
+const usernameDisplay = document.getElementById('usernameDisplay'); // Nuevo: Referencia para el nombre de usuario
 
 // --- Funciones de Autenticación ---
 
@@ -590,23 +592,28 @@ auth.onAuthStateChanged(async (user) => {
 
         try {
             const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists && userDoc.data().errors) {
-                errors = userDoc.data().errors;
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                errors = userData.errors || {}; // Cargar errores, o vacío si no existen
+                usernameDisplay.textContent = userData.name || user.email; // Mostrar nombre o email
                 console.log('Errores cargados de Firestore:', errors);
             } else {
-                errors = {}; // Si no hay documento o no hay errores, inicializar vacío
-                // Y crear/asegurar que el documento del usuario existe con un campo de errores.
+                errors = {}; // Si no hay documento, inicializar vacío
+                usernameDisplay.textContent = user.email; // Mostrar email por defecto
+                // Crear/asegurar que el documento del usuario existe con un campo de errores.
                 await db.collection('users').doc(user.uid).set({
-                    errors: {} // Inicializar o actualizar el campo de errores
-                }, { merge: true }); // 'merge: true' es crucial para no sobrescribir otros campos del usuario
-                console.log('Usuario y errores inicializados en Firestore (o campo errores creado).');
+                    email: user.email,
+                    errors: {}
+                }, { merge: true });
+                console.log('Documento de usuario inicializado en Firestore.');
             }
         } catch (error) {
-            console.error('Error al cargar/inicializar errores de Firestore:', error);
+            console.error('Error al cargar/inicializar datos de usuario de Firestore:', error);
             errors = {}; // En caso de error, inicializar vacío para no bloquear la app
+            usernameDisplay.textContent = user.email; // Mostrar email si hay error
         }
         
-        // Una vez que los errores están cargados, mostrar la aplicación principal
+        // Una vez que los datos del usuario están cargados, mostrar la aplicación principal
         authSection.classList.add('hidden');
         mainContent.classList.remove('hidden');
 
@@ -615,6 +622,7 @@ auth.onAuthStateChanged(async (user) => {
         errors = {}; // Limpiar errores locales si no hay usuario
         streak = 0; // Resetear racha
         streakElement.textContent = streak;
+        usernameDisplay.textContent = ''; // Limpiar el nombre de usuario mostrado
 
         // Ocultar contenido principal y mostrar sección de autenticación
         authSection.classList.remove('hidden');
@@ -623,8 +631,19 @@ auth.onAuthStateChanged(async (user) => {
     }
 });
 
-// Generar tablas de estudio al cargar por primera vez (aunque estén ocultas)
-document.addEventListener('DOMContentLoaded', generateTables);
+// Event Listener para la tecla ENTER en el input de respuesta
+document.addEventListener('DOMContentLoaded', () => {
+    generateTables(); // Generar tablas al cargar el DOM
+    
+    if (answerInput) {
+        answerInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevenir el comportamiento por defecto (salto de línea)
+                checkAnswer(); // Llamar a la función de verificación de respuesta
+            }
+        });
+    }
+});
 </script>
 
 </body>
