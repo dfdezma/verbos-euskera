@@ -183,63 +183,64 @@
     const auth = firebase.auth();
   </script>
 </head>
-  <section id="study" class="hidden" aria-live="polite" style="max-width: 900px; margin: 40px auto; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 30px; font-family: 'Segoe UI', sans-serif;">
-    <h2 style="font-size: 1.8em; margin-bottom: 20px; text-align: center; color: #333;">Tabla de Conjugaciones: Presente y Pasado</h2>
+  <section id="study" class="hidden" aria-live="polite" style="max-width: 1000px; margin: 40px auto; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 40px; font-family: 'Segoe UI', sans-serif;">
+    <h2 style="font-size: 2em; margin-bottom: 30px; text-align: center; color: #333;">Tabla de Conjugaciones: Presente y Pasado</h2>
   
-    <h3 style="color: #444; margin-top: 30px;">Presente</h3>
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th style="padding: 10px; text-align: center; border: 1px solid #ddd;">→ / ↓</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">niri</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">zuri</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">hari</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">guri</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">zuei</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">haiei</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th style="background: #f9f9f9;">nik</th><td></td><td>dizut</td><td>diot</td><td></td><td>dizuet</td><td>diet</td></tr>
-          <tr><th style="background: #f9f9f9;">zuk</th><td>didazu</td><td></td><td>diozu</td><td>diguzu</td><td></td><td>diezu</td></tr>
-          <tr><th style="background: #f9f9f9;">hark</th><td>dit</td><td>dizu</td><td>dio</td><td>digu</td><td>dizue</td><td>die</td></tr>
-          <tr><th style="background: #f9f9f9;">guk</th><td></td><td>dizugu</td><td>diogu</td><td></td><td>dizuegu</td><td>diegu</td></tr>
-          <tr><th style="background: #f9f9f9;">zuek</th><td>didazue</td><td></td><td>diozue</td><td>diguzue</td><td></td><td>diezue</td></tr>
-          <tr><th style="background: #f9f9f9;">haiek</th><td>didate</td><td>dizute</td><td>diote</td><td>digute</td><td>dizuete</td><td>diete</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- Presente -->
+    <h3 style="color: #444; margin-top: 20px;">Presente</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 1em;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th style="padding: 12px; text-align: center; border: 1px solid #ccc;">→ / ↓</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">niri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th style="background: #fafafa;">nik</th>   <td></td>        <td>dizut</td>   <td>diot</td>    <td></td>        <td>dizuet</td>   <td>diet</td></tr>
+        <tr><th style="background: #fafafa;">zuk</th>   <td>didazu</td>  <td></td>        <td>diozu</td>  <td>diguzu</td>  <td></td>         <td>diezu</td></tr>
+        <tr><th style="background: #fafafa;">hark</th>  <td>dit</td>     <td>dizu</td>    <td>dio</td>     <td>digu</td>     <td>dizue</td>    <td>die</td></tr>
+        <tr><th style="background: #fafafa;">guk</th>   <td></td>        <td>dizugu</td>  <td>diogu</td>   <td></td>        <td>dizuegu</td>  <td>diegu</td></tr>
+        <tr><th style="background: #fafafa;">zuek</th>  <td>didazue</td> <td></td>        <td>diozue</td> <td>diguzue</td> <td></td>         <td>diezue</td></tr>
+        <tr><th style="background: #fafafa;">haiek</th> <td>didate</td>  <td>dizute</td>  <td>diote</td>   <td>digute</td>   <td>dizuete</td>  <td>diete</td></tr>
+      </tbody>
+    </table>
   
-    <h3 style="color: #444; margin-top: 30px;">Pasado</h3>
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr style="background-color: #f2f2f2;">
-            <th style="padding: 10px; text-align: center; border: 1px solid #ddd;">→ / ↓</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">niri</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">zuri</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">hari</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">guri</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">zuei</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">haiei</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th style="background: #f9f9f9;">nik</th><td></td><td>nizun</td><td>nion</td><td></td><td>nizuen</td><td>nien</td></tr>
-          <tr><th style="background: #f9f9f9;">zuk</th><td>zenidan</td><td></td><td>zenion</td><td>zenigun</td><td></td><td>zenien</td></tr>
-          <tr><th style="background: #f9f9f9;">hark</th><td>zidan</td><td>zizun</td><td>zion</td><td>zigun</td><td>zizuen</td><td>zien</td></tr>
-          <tr><th style="background: #f9f9f9;">guk</th><td></td><td>genizun</td><td>genion</td><td></td><td>genizuen</td><td>genien</td></tr>
-          <tr><th style="background: #f9f9f9;">zuek</th><td>zenidaten</td><td></td><td>zenioten</td><td>zeniguten</td><td></td><td>zenieten</td></tr>
-          <tr><th style="background: #f9f9f9;">haiek</th><td>zidaten</td><td>zizuten</td><td>zioten</td><td>ziguten</td><td>zizueten</td><td>zieten</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- Pasado -->
+    <h3 style="color: #444; margin-top: 20px;">Pasado</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 1em;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th style="padding: 12px; text-align: center; border: 1px solid #ccc;">→ / ↓</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">niri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th style="background: #fafafa;">nik</th>   <td></td>           <td>nizun</td>      <td>nion</td>     <td></td>          <td>nizuen</td>    <td>nien</td></tr>
+        <tr><th style="background: #fafafa;">zuk</th>   <td>zenidan</td>    <td></td>           <td>zenion</td>   <td>zenigun</td>   <td></td>          <td>zenien</td></tr>
+        <tr><th style="background: #fafafa;">hark</th>  <td>zidan</td>      <td>zizun</td>       <td>zion</td>     <td>zigun</td>     <td>zizuen</td>    <td>zien</td></tr>
+        <tr><th style="background: #fafafa;">guk</th>   <td></td>           <td>genizun</td>     <td>genion</td>   <td></td>          <td>genizuen</td>  <td>genien</td></tr>
+        <tr><th style="background: #fafafa;">zuek</th>  <td>zenidaten</td>  <td></td>            <td>zenioten</td> <td>zeniguten</td> <td></td>          <td>zenieten</td></tr>
+        <tr><th style="background: #fafafa;">haiek</th> <td>zidaten</td>    <td>zizuten</td>     <td>zioten</td>   <td>ziguten</td>   <td>zizueten</td>  <td>zieten</td></tr>
+      </tbody>
+    </table>
   
-    <div style="text-align: center; margin-top: 30px;">
-      <button onclick="showMenu()" class="secondary" style="padding: 10px 20px; font-size: 1em; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px; cursor: pointer;">Volver al Menú</button>
+    <div style="text-align: center; margin-top: 40px;">
+      <button onclick="showMenu()" class="secondary" style="padding: 12px 24px; font-size: 1em; background: #f0f0f0; border: 1px solid #ccc; border-radius: 8px; cursor: pointer;">
+        Volver al Menú
+      </button>
     </div>
   </section>
+
 
 
 <body>
