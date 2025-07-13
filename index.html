@@ -1,184 +1,575 @@
 <!DOCTYPE html>
-<html lang="eu">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nor-Nori-Nork App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Práctica de Verbos en Euskera</title>
+
   <style>
-    body { font-family: sans-serif; text-align: center; background-color: #f0f0f5; margin: 0; padding: 0; }
-    h1 { background-color: #333; color: white; padding: 1em; margin: 0; }
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #f5f7fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1, h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      text-align: center;
+    }
     .hidden { display: none; }
-    input, button { padding: 0.5em; margin: 0.5em; font-size: 1em; }
-    table { margin: 1em auto; border-collapse: collapse; }
-    td, th { border: 1px solid #aaa; padding: 0.5em 1em; text-align: center; }
-    th { background-color: #ddd; }
-    .correct { color: green; font-weight: bold; }
-    .incorrect { color: red; font-weight: bold; }
+    #login-register, #menu, #exercise, #errors, #study {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 320px;
+      max-width: 95vw;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #34495e;
+    }
+    input[type="email"], input[type="password"], input[type="text"] {
+      padding: 8px 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+    }
+    input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #2980b9;
+    }
+    button, input[type="submit"] {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 8px;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover, input[type="submit"]:hover {
+      background-color: #1f618d;
+    }
+    button.secondary {
+      background-color: #95a5a6;
+      margin-left: 10px;
+    }
+    button.secondary:hover {
+      background-color: #7f8c8d;
+    }
+    .feedback {
+      font-size: 0.9rem;
+      margin-top: -10px;
+      margin-bottom: 15px;
+      color: #e74c3c;
+      min-height: 18px;
+    }
+    .feedback.correct {
+      color: #27ae60;
+    }
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-wrapper input {
+      flex-grow: 1;
+    }
+    .password-wrapper button {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #2980b9;
+      font-size: 1.1rem;
+      padding: 0;
+    }
+    #menu p {
+      margin-bottom: 15px;
+      font-weight: 600;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    #menu button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    #exercise #question {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    #exercise input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    #feedback {
+      min-height: 24px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    #feedback.correct {
+      color: #27ae60;
+    }
+    #feedback.incorrect {
+      color: #e74c3c;
+    }
+    #errorList {
+      list-style: inside disc;
+      color: #34495e;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #2980b9;
+      color: white;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
   </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc",
+      authDomain: "verboseuskeraapp.firebaseapp.com",
+      projectId: "verboseuskeraapp",
+      storageBucket: "verboseuskeraapp.appspot.com",
+      messagingSenderId: "1002538902447",
+      appId: "1:1002538902447:web:b6d1f2795fef697d22c55a",
+      measurementId: "G-83R58Q7B8J"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
 </head>
 <body>
-  <h1>Nor-Nori-Nork</h1>
 
-  <div id="menu">
-    <button onclick="startExercise('present')">Aditz Trinkoak - Oraina</button>
-    <button onclick="startExercise('past')">Aditz Trinkoak - Iragana</button>
-    <button onclick="showStudy()">Ikasi</button>
-    <button onclick="showErrors()">Erroreak ikusi</button>
-  </div>
+  <h1>Práctica de Verbos en Euskera</h1>
 
-  <div id="exercise" class="hidden">
-    <h2 id="question"></h2>
-    <input type="text" id="answer" placeholder="Idatzi hemen" />
-    <button onclick="checkAnswer()">Bidali</button>
-    <p id="feedback"></p>
-    <p>Jarraian: <span id="streak">0</span></p>
-    <button onclick="location.reload()">Itzuli</button>
-  </div>
+  <section id="login-register">
+    <form id="loginForm" onsubmit="return loginUser(event)">
+      <h2>Iniciar sesión</h2>
+      <label for="loginUsername">Correo electrónico</label>
+      <input type="email" id="loginUsername" required placeholder="tu@email.com" />
+      <label for="loginPassword">Contraseña</label>
+      <div class="password-wrapper">
+        <input type="password" id="loginPassword" required placeholder="Contraseña" />
+        <button type="button" title="Mostrar contraseña" onclick="togglePassword('loginPassword', this)">👁️</button>
+      </div>
+      <input type="submit" value="Entrar" />
+      <p class="feedback" id="loginFeedback"></p>
+      <p>¿No tienes cuenta? <button type="button" onclick="showRegister()" class="secondary">Regístrate</button></p>
+    </form>
 
-  <div id="errors" class="hidden">
-    <h2>Erroreak</h2>
+    <form id="registerForm" class="hidden" onsubmit="return registerUser(event)">
+      <h2>Registrarse</h2>
+      <label for="registerUsername">Correo electrónico</label>
+      <input type="email" id="registerUsername" required placeholder="tu@email.com" />
+      <label for="registerPassword">Contraseña</label>
+      <div class="password-wrapper">
+        <input type="password" id="registerPassword" required placeholder="Contraseña" />
+        <button type="button" title="Mostrar contraseña" onclick="togglePassword('registerPassword', this)">👁️</button>
+      </div>
+      <label for="registerPasswordConfirm">Confirmar contraseña</label>
+      <div class="password-wrapper">
+        <input type="password" id="registerPasswordConfirm" required placeholder="Repite la contraseña" />
+        <button type="button" title="Mostrar contraseña" onclick="togglePassword('registerPasswordConfirm', this)">👁️</button>
+      </div>
+      <input type="submit" value="Registrar" />
+      <p class="feedback" id="registerFeedback"></p>
+      <p>¿Ya tienes cuenta? <button type="button" onclick="showLogin()" class="secondary">Inicia sesión</button></p>
+    </form>
+  </section>
+
+  <section id="menu" class="hidden">
+    <p>¡Bienvenido! Selecciona una opción:</p>
+    <button onclick="startExercise()">Practicar Conjugaciones</button>
+    <button onclick="showErrors()">Mostrar Errores</button>
+    <button onclick="logout()">Cerrar sesión</button>
+  </section>
+
+  <section id="exercise" class="hidden" aria-live="polite">
+    <h2>Ejercicio de Conjugación</h2>
+    <div id="question"></div>
+    <form id="answerForm" onsubmit="return checkAnswer(event)">
+      <input type="text" id="answerInput" placeholder="Escribe la conjugación correcta" autocomplete="off" required />
+      <input type="submit" value="Comprobar" />
+    </form>
+    <div id="feedback" role="alert"></div>
+    <button id="nextButton" class="hidden" onclick="nextQuestion()">Siguiente</button>
+    <button onclick="finishExercise()">Terminar ejercicio</button>
+  </section>
+
+  <section id="errors" class="hidden" aria-live="polite">
+    <h2>Errores cometidos</h2>
     <ul id="errorList"></ul>
-    <button onclick="location.reload()">Itzuli</button>
-  </div>
+    <button onclick="clearErrors()">Borrar errores</button>
+    <button onclick="backToMenu()">Volver al menú</button>
+  </section>
 
-  <div id="study" class="hidden">
-    <h2>Oraina</h2>
-    <div id="presentTable"></div>
-    <h2>Iragana</h2>
-    <div id="pastTable"></div>
-    <button onclick="location.reload()">Itzuli</button>
-  </div>
+  <section id="study" class="hidden" aria-live="polite">
+    <h2>Lista de verbos y conjugaciones</h2>
+    <table>
+      <thead>
+        <tr><th>Verbo</th><th>Pronombres</th><th>Conjugación</th><th>Errores</th></tr>
+      </thead>
+      <tbody id="studyTableBody"></tbody>
+    </table>
+    <button onclick="backToMenu()">Volver al menú</button>
+  </section>
 
   <script>
-    let currentSet = {};
-    let currentKey = '';
-    let streak = 0;
-    let errors = {};
-
+    // --- Datos de conjugación ---
     const s_present = {
-      ["nik", "zuri"]: ["dizut", 0], ["nik", "hari"]: ["diot", 0], ["nik", "zuei"]: ["dizuet", 0],
-      ["nik", "haiei"]: ["diet", 0], ["zuk", "niri"]: ["didazu", 0], ["zuk", "hari"]: ["diozu", 0],
-      ["zuk", "guri"]: ["diguzu", 0], ["zuk", "haiei"]: ["diezu", 0], ["hark", "niri"]: ["dit", 0],
-      ["hark", "zuri"]: ["dizu", 0], ["hark", "hari"]: ["dio", 0], ["hark", "guri"]: ["digu", 0],
-      ["hark", "zuei"]: ["dizue", 0], ["hark", "haiei"]: ["die", 0], ["guk", "zuri"]: ["dizugu", 0],
-      ["guk", "hari"]: ["diogu", 0], ["guk", "zuei"]: ["dizuegu", 0], ["guk", "haiei"]: ["diegu", 0],
-      ["zuek", "niri"]: ["didazue", 0], ["zuek", "hari"]: ["diozue", 0], ["zuek", "guri"]: ["diguzue", 0],
-      ["zuek", "haiei"]: ["diezue", 0], ["haiek", "niri"]: ["didate", 0], ["haiek", "zuri"]: ["dizute", 0],
-      ["haiek", "hari"]: ["diote", 0], ["haiek", "guri"]: ["digute", 0], ["haiek", "zuei"]: ["dizuete", 0],
-      ["haiek", "haiei"]: ["diete", 0]
+      'izan': {
+        'nik-zuri': ['naiz', 0],
+        'hik-zuk': ['haiz', 0],
+        'hark-hark': ['da', 0],
+        'gu-zuek': ['gara', 0],
+        'zuek-zuek': ['zarete', 0],
+        'haiek-haiek': ['dira', 0]
+      },
+      'etorri': {
+        'nik-zuri': ['nator', 0],
+        'hik-zuk': ['hator', 0],
+        'hark-hark': ['dator', 0],
+        'gu-zuek': ['gatoz', 0],
+        'zuek-zuek': ['zatozte', 0],
+        'haiek-haiek': ['datoz', 0]
+      }
     };
 
     const s_past = {
-      ["nik", "zuri"]: ["nizum", 0], ["nik", "hari"]: ["nion", 0], ["nik", "zuei"]: ["nizuen", 0],
-      ["nik", "haiei"]: ["nien", 0], ["zuk", "niri"]: ["zenidan", 0], ["zuk", "hari"]: ["zenion", 0],
-      ["zuk", "guri"]: ["zenigun", 0], ["zuk", "haiei"]: ["zenien", 0], ["hark", "niri"]: ["zidan", 0],
-      ["hark", "zuri"]: ["zizum", 0], ["hark", "hari"]: ["zion", 0], ["hark", "guri"]: ["zigun", 0],
-      ["hark", "zuei"]: ["zizuen", 0], ["hark", "haiei"]: ["zien", 0], ["guk", "zuri"]: ["genizum", 0],
-      ["guk", "hari"]: ["genion", 0], ["guk", "zuei"]: ["genizuen", 0], ["guk", "haiei"]: ["genien", 0],
-      ["zuek", "niri"]: ["zenidaten", 0], ["zuek", "hari"]: ["zenioten", 0], ["zuek", "guri"]: ["zeniguten", 0],
-      ["zuek", "haiei"]: ["zenieten", 0], ["haiek", "niri"]: ["zidaten", 0], ["haiek", "zuri"]: ["zizuten", 0],
-      ["haiek", "hari"]: ["zioten", 0], ["haiek", "guri"]: ["ziguten", 0], ["haiek", "zuei"]: ["zizueten", 0],
-      ["haiek", "haiei"]: ["zieten", 0]
+      'izan': {
+        'nik-zuri': ['nintzen', 0],
+        'hik-zuk': ['hintzen', 0],
+        'hark-hark': ['zen', 0],
+        'gu-zuek': ['ginen', 0],
+        'zuek-zuek': ['zineten', 0],
+        'haiek-haiek': ['ziren', 0]
+      },
+      'etorri': {
+        'nik-zuri': ['nentorren', 0],
+        'hik-zuk': ['hentorren', 0],
+        'hark-hark': ['zetorren', 0],
+        'gu-zuek': ['gentozen', 0],
+        'zuek-zuek': ['zentozten', 0],
+        'haiek-haiek': ['zetozen', 0]
+      }
     };
 
-    const emisores = ["nik", "zuk", "hark", "guk", "zuek", "haiek"];
-    const receptores = ["niri", "zuri", "hari", "guri", "zuei", "haiei"];
+    // Frases para mostrar los pronombres más legibles
+    const pronounLabels = {
+      'nik-zuri': 'nik - zuri',
+      'hik-zuk': 'hik - zuk',
+      'hark-hark': 'hark',
+      'gu-zuek': 'gu - zuek',
+      'zuek-zuek': 'zuek',
+      'haiek-haiek': 'haiek'
+    };
 
-    function startExercise(type) {
-      currentSet = type === 'present' ? s_present : s_past;
-      const keys = Object.keys(currentSet);
-      currentKey = keys[Math.floor(Math.random() * keys.length)];
-      document.getElementById('menu').classList.add('hidden');
-      document.getElementById('errors').classList.add('hidden');
-      document.getElementById('study').classList.add('hidden');
-      document.getElementById('exercise').classList.remove('hidden');
-      showQuestion();
-      updateStreak(0);
+    let currentVerb = null;
+    let currentTense = null;
+    let currentPairKey = null;
+    let streak = 0;
+    let errors = [];
+
+    // --- Elementos DOM ---
+    const loginRegisterSection = document.getElementById('login-register');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const loginFeedback = document.getElementById('loginFeedback');
+    const registerFeedback = document.getElementById('registerFeedback');
+    const menuSection = document.getElementById('menu');
+    const exerciseSection = document.getElementById('exercise');
+    const questionDiv = document.getElementById('question');
+    const answerForm = document.getElementById('answerForm');
+    const answerInput = document.getElementById('answerInput');
+    const feedbackDiv = document.getElementById('feedback');
+    const nextButton = document.getElementById('nextButton');
+    const errorsSection = document.getElementById('errors');
+    const errorList = document.getElementById('errorList');
+    const studySection = document.getElementById('study');
+    const studyTableBody = document.getElementById('studyTableBody');
+
+    // --- Funciones UI ---
+    function showRegister() {
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+      loginFeedback.textContent = '';
+      registerFeedback.textContent = '';
+    }
+    function showLogin() {
+      registerForm.classList.add('hidden');
+      loginForm.classList.remove('hidden');
+      loginFeedback.textContent = '';
+      registerFeedback.textContent = '';
     }
 
-    function showQuestion() {
-      const [emisor, receptor] = currentKey.split(',');
-      document.getElementById('question').textContent = `Conjuga "${emisor.trim()}" → "${receptor.trim()}"`;
-      document.getElementById('answer').value = '';
-      document.getElementById('feedback').textContent = '';
-      document.getElementById('answer').focus();
-    }
-
-    function checkAnswer() {
-      const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
-      const [correctAnswer, count] = currentSet[currentKey];
-      const feedback = document.getElementById('feedback');
-
-      if (userAnswer === correctAnswer.toLowerCase()) {
-        feedback.textContent = '¡Correcto!';
-        feedback.className = 'correct';
-        updateStreak(streak + 1);
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
       } else {
-        feedback.textContent = `Incorrecto. Respuesta correcta: ${correctAnswer}`;
-        feedback.className = 'incorrect';
-        updateStreak(0);
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
 
-        currentSet[currentKey][1] += 1;
-        errors[currentKey] = currentSet[currentKey];
+    // --- Firebase Auth ---
+    async function loginUser(event) {
+      event.preventDefault();
+      loginFeedback.textContent = '';
+      const email = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        loginRegisterSection.classList.add('hidden');
+        menuSection.classList.remove('hidden');
+      } catch (error) {
+        loginFeedback.textContent = "Error: " + error.message;
+      }
+    }
+
+    async function registerUser(event) {
+      event.preventDefault();
+      registerFeedback.textContent = '';
+      const email = document.getElementById('registerUsername').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerPasswordConfirm').value;
+      if (password !== confirmPassword) {
+        registerFeedback.textContent = 'Las contraseñas no coinciden.';
+        return;
+      }
+      try {
+        await auth.createUserWithEmailAndPassword(email, password);
+        registerFeedback.textContent = 'Usuario registrado correctamente, por favor inicia sesión.';
+        setTimeout(() => showLogin(), 2000);
+      } catch (error) {
+        registerFeedback.textContent = "Error: " + error.message;
+      }
+    }
+
+    function logout() {
+      auth.signOut();
+      menuSection.classList.add('hidden');
+      exerciseSection.classList.add('hidden');
+      errorsSection.classList.add('hidden');
+      studySection.classList.add('hidden');
+      loginRegisterSection.classList.remove('hidden');
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        loginRegisterSection.classList.add('hidden');
+        menuSection.classList.remove('hidden');
+      } else {
+        loginRegisterSection.classList.remove('hidden');
+        menuSection.classList.add('hidden');
+        exerciseSection.classList.add('hidden');
+        errorsSection.classList.add('hidden');
+        studySection.classList.add('hidden');
+      }
+    });
+
+    // --- Ejercicio ---
+
+    // Elegir verbo y pronombre al azar
+    function getRandom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function startExercise() {
+      menuSection.classList.add('hidden');
+      errorsSection.classList.add('hidden');
+      studySection.classList.add('hidden');
+      exerciseSection.classList.remove('hidden');
+      streak = 0;
+      nextQuestion();
+    }
+
+    function nextQuestion() {
+      feedbackDiv.textContent = '';
+      feedbackDiv.className = '';
+      answerInput.value = '';
+      nextButton.classList.add('hidden');
+      answerInput.disabled = false;
+      answerInput.focus();
+
+      // Escoger aleatoriamente entre presente y pasado
+      currentTense = getRandom(['present', 'past']);
+      // Escoger verbo
+      const verbs = currentTense === 'present' ? Object.keys(s_present) : Object.keys(s_past);
+      currentVerb = getRandom(verbs);
+
+      // Escoger pronombre par (key)
+      const pronounKeys = currentTense === 'present' ? Object.keys(s_present[currentVerb]) : Object.keys(s_past[currentVerb]);
+      currentPairKey = getRandom(pronounKeys);
+
+      // Mostrar pregunta
+      const pronLabel = pronounLabels[currentPairKey] || currentPairKey;
+      const tenseLabel = currentTense === 'present' ? 'Presente' : 'Pasado';
+      questionDiv.textContent = `Verbo: "${currentVerb}" - Tiempo: ${tenseLabel}\nConjuga para: ${pronLabel}`;
+    }
+
+    function checkAnswer(event) {
+      event.preventDefault();
+      const userAnswer = answerInput.value.trim().toLowerCase();
+      let correctAnswer;
+      if (currentTense === 'present') {
+        correctAnswer = s_present[currentVerb][currentPairKey][0].toLowerCase();
+      } else {
+        correctAnswer = s_past[currentVerb][currentPairKey][0].toLowerCase();
       }
 
-      const keys = Object.keys(currentSet);
-      currentKey = keys[Math.floor(Math.random() * keys.length)];
-      showQuestion();
+      if (userAnswer === correctAnswer) {
+        feedbackDiv.textContent = "¡Correcto! 🎉";
+        feedbackDiv.className = 'correct';
+        streak++;
+        nextButton.classList.remove('hidden');
+        answerInput.disabled = true;
+      } else {
+        feedbackDiv.textContent = `Incorrecto. La respuesta correcta es: "${correctAnswer}"`;
+        feedbackDiv.className = 'incorrect';
+        streak = 0;
+        // Registrar error
+        const errorEntry = {
+          verb: currentVerb,
+          tense: currentTense,
+          pronouns: pronounLabels[currentPairKey] || currentPairKey,
+          correct: correctAnswer,
+          given: userAnswer
+        };
+        errors.push(errorEntry);
+        // Incrementar contador en datos
+        if (currentTense === 'present') {
+          s_present[currentVerb][currentPairKey][1]++;
+        } else {
+          s_past[currentVerb][currentPairKey][1]++;
+        }
+        nextButton.classList.remove('hidden');
+        answerInput.disabled = true;
+      }
     }
 
-    function updateStreak(value) {
-      streak = value;
-      document.getElementById('streak').textContent = streak;
+    nextButton.addEventListener('click', nextQuestion);
+
+    function finishExercise() {
+      exerciseSection.classList.add('hidden');
+      menuSection.classList.remove('hidden');
     }
 
+    // --- Mostrar errores ---
     function showErrors() {
-      const ul = document.getElementById('errorList');
-      ul.innerHTML = '';
-      if (Object.keys(errors).length === 0) {
-        ul.innerHTML = '<li>Ez dago erroreak</li>';
+      menuSection.classList.add('hidden');
+      exerciseSection.classList.add('hidden');
+      studySection.classList.add('hidden');
+      errorsSection.classList.remove('hidden');
+      errorList.innerHTML = '';
+      if (errors.length === 0) {
+        errorList.innerHTML = '<li>No hay errores registrados.</li>';
       } else {
-        for (const [key, [conjugacion, veces]] of Object.entries(errors)) {
-          const [emisor, receptor] = key.split(',');
+        for (const err of errors) {
           const li = document.createElement('li');
-          li.textContent = `${emisor.trim()} → ${receptor.trim()}: ${conjugacion} (erroreak: ${veces})`;
-          ul.appendChild(li);
+          li.textContent = `"${err.verb}" (${err.tense}), pronombres ${err.pronouns}: respuesta correcta "${err.correct}", tú pusiste "${err.given}"`;
+          errorList.appendChild(li);
         }
       }
-      document.getElementById('menu').classList.add('hidden');
-      document.getElementById('exercise').classList.add('hidden');
-      document.getElementById('study').classList.add('hidden');
-      document.getElementById('errors').classList.remove('hidden');
     }
 
-    function createTable(data) {
-      let html = '<table><thead><tr><th></th>';
-      for (const receptor of receptores) {
-        html += `<th>${receptor}</th>`;
-      }
-      html += '</tr></thead><tbody>';
-
-      for (const emisor of emisores) {
-        html += `<tr><td><strong>${emisor}</strong></td>`;
-        for (const receptor of receptores) {
-          const key = `${emisor},${receptor}`;
-          const value = data[key] ? data[key][0] : '-';
-          html += `<td>${value}</td>`;
+    function clearErrors() {
+      if (confirm('¿Seguro que quieres borrar todos los errores?')) {
+        errors.length = 0;
+        // Resetear contadores también
+        for (const verb in s_present) {
+          for (const pair in s_present[verb]) {
+            s_present[verb][pair][1] = 0;
+          }
         }
-        html += '</tr>';
+        for (const verb in s_past) {
+          for (const pair in s_past[verb]) {
+            s_past[verb][pair][1] = 0;
+          }
+        }
+        showErrors();
       }
-      html += '</tbody></table>';
-      return html;
     }
 
+    function backToMenu() {
+      errorsSection.classList.add('hidden');
+      studySection.classList.add('hidden');
+      menuSection.classList.remove('hidden');
+    }
+
+    // --- Mostrar estudio de verbos ---
     function showStudy() {
-      document.getElementById('presentTable').innerHTML = createTable(s_present);
-      document.getElementById('pastTable').innerHTML = createTable(s_past);
-      document.getElementById('menu').classList.add('hidden');
-      document.getElementById('exercise').classList.add('hidden');
-      document.getElementById('errors').classList.add('hidden');
-      document.getElementById('study').classList.remove('hidden');
+      menuSection.classList.add('hidden');
+      errorsSection.classList.add('hidden');
+      exerciseSection.classList.add('hidden');
+      studySection.classList.remove('hidden');
+      studyTableBody.innerHTML = '';
+
+      // Present
+      for (const verb in s_present) {
+        for (const pair in s_present[verb]) {
+          const [conjugation, count] = s_present[verb][pair];
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${verb}</td><td>${pronounLabels[pair]}</td><td>${conjugation}</td><td>${count}</td>`;
+          studyTableBody.appendChild(tr);
+        }
+      }
+      // Past
+      for (const verb in s_past) {
+        for (const pair in s_past[verb]) {
+          const [conjugation, count] = s_past[verb][pair];
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${verb}</td><td>${pronounLabels[pair]}</td><td>${conjugation}</td><td>${count}</td>`;
+          studyTableBody.appendChild(tr);
+        }
+      }
     }
+
   </script>
 </body>
 </html>
