@@ -164,6 +164,17 @@
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
+    /* Primera columna */
+    table th:first-child,
+    table td:first-child {
+      background-color: #2980b9;
+      color: white;
+    }
+    table th, table td {
+      text-align: center; /* centra horizontalmente */
+      vertical-align: middle; /* centra verticalmente */
+    }
+
   </style>
 
   <!-- Firebase SDKs -->
@@ -183,7 +194,14 @@
     const auth = firebase.auth();
   </script>
 </head>
-  <section id="study" class="hidden" aria-live="polite" style="max-width: 1000px; margin: 40px auto; background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 40px; font-family: 'Segoe UI', sans-serif;">
+ <section id="study" class="hidden" aria-live="polite"
+  style="max-width: 1000px; margin: 40px auto; 
+         /* quita o comenta la línea de fondo, border-radius y box-shadow */
+         /* background: #ffffff; */
+         /* border-radius: 16px; */
+         /* box-shadow: 0 4px 20px rgba(0,0,0,0.08); */
+         padding: 40px; font-family: 'Segoe UI', sans-serif;">
+
     <h2 style="font-size: 2em; margin-bottom: 30px; text-align: center; color: #333;">Tabla de Conjugaciones: Presente y Pasado</h2>
   
     <!-- Presente -->
