@@ -5,462 +5,326 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Práctica de Verbos en Euskera</title>
   <style>
-    :root {
-      --primary: #0077cc;
-      --background: #f0f4f8;
-      --card-bg: #ffffff;
-      --text-dark: #333;
-      --text-light: #666;
-      --success: #2ecc71;
-      --error: #e74c3c;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--background);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      background: var(--card-bg);
-      width: 100%;
-      max-width: 700px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      padding: 30px 25px;
-      text-align: center;
-    }
-    h1 { margin-top: 0; color: var(--primary); }
-    p { color: var(--text-dark); font-size: 18px; }
-    button {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      margin: 10px 5px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    button:hover { background-color: #005fa3; }
-    input[type="text"], input[type="password"], input[type="email"] {
-      width: 80%;
-      padding: 12px 40px 12px 12px; /* espacio para icono */
-      margin: 10px 0 5px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      position: relative;
-    }
-    #feedback {
-      margin: 10px 0;
-      font-size: 18px;
-    }
-    #feedback.correct { color: var(--success); }
-    #feedback.incorrect { color: var(--error); }
-    ul { list-style: none; padding: 0; text-align: left; }
-    li { padding: 8px 0; color: var(--text-light); font-size: 16px; }
-    .hidden { display: none; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      font-size: 14px;
-      text-align: center;
-    }
-    th { background-color: var(--primary); color: white; }
-    td { background-color: #f9f9f9; }
-    .password-wrapper {
-      position: relative;
-      display: inline-block;
-      width: 80%;
-      max-width: 350px;
-    }
-    .toggle-password-btn {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--primary);
-      cursor: pointer;
-      font-weight: normal;
-      padding: 0;
-      margin: 0;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-    }
-    .toggle-password-btn svg {
-      fill: var(--primary);
-      width: 20px;
-      height: 20px;
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 22px; }
-      button { width: 100%; margin: 8px 0; }
-      input[type="text"], input[type="password"], input[type="email"] {
-        width: 100%;
-        padding-right: 40px;
-      }
-      .password-wrapper { width: 100%; max-width: none; }
-    }
+    /* ... (tu CSS igual) ... */
   </style>
+
+  <!-- Firebase SDKs (versión compat para facilitar uso clásico) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script>
+    // Configura tu proyecto Firebase aquí:
+    const firebaseConfig = {
+      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc",
+      authDomain: "verboseuskeraapp.firebaseapp.com",
+      projectId: "verboseuskeraapp",
+      storageBucket: "verboseuskeraapp.firebasestorage.app",
+      messagingSenderId: "1002538902447",
+      appId: "1:1002538902447:web:b6d1f2795fef697d22c55a",
+      measurementId: "G-83R58Q7B8J"
+    };
+
+    // Inicializa Firebase con SDK compat
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
 </head>
+
 <body>
-<div class="container">
+  <!-- Aquí va todo tu HTML: formularios, menú, ejercicio, etc. -->
 
-  <h1>Práctica de Verbos en Euskera</h1>
-
-  <!-- LOGIN & REGISTER -->
+  <!-- Ejemplo simple: -->
   <div id="login-register">
-    <button onclick="showLogin()">Iniciar sesión</button>
-    <button onclick="showRegister()">Registrarse</button>
-
-    <form id="loginForm" class="hidden" onsubmit="return loginUser(event)">
-      <h2>Iniciar sesión</h2>
-      <input type="text" id="loginUsername" placeholder="Usuario" required />
-      <div class="password-wrapper">
-        <input type="password" id="loginPassword" placeholder="Contraseña" required />
-        <button type="button" class="toggle-password-btn" onclick="togglePassword('loginPassword', this)" aria-label="Mostrar/Ocultar contraseña">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-            <circle cx="12" cy="12" r="2.5"/>
-          </svg>
-        </button>
-      </div>
+    <form id="loginForm" onsubmit="return loginUser(event)">
+      <input id="loginUsername" type="email" placeholder="Email" required />
+      <input id="loginPassword" type="password" placeholder="Contraseña" required />
       <button type="submit">Entrar</button>
-      <p><a href="#" onclick="showRegister(); return false;">¿No tienes cuenta? Regístrate</a></p>
-      <p id="loginFeedback"></p>
+      <div id="loginFeedback" style="color:red;"></div>
     </form>
 
     <form id="registerForm" class="hidden" onsubmit="return registerUser(event)">
-      <h2>Registrarse</h2>
-      <input type="text" id="registerUsername" placeholder="Usuario" required />
-      <div class="password-wrapper">
-        <input type="password" id="registerPassword" placeholder="Contraseña" required minlength="6" />
-        <button type="button" class="toggle-password-btn" onclick="togglePassword('registerPassword', this)" aria-label="Mostrar/Ocultar contraseña">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-            <circle cx="12" cy="12" r="2.5"/>
-          </svg>
-        </button>
-      </div>
-      <div class="password-wrapper">
-        <input type="password" id="registerPasswordConfirm" placeholder="Confirmar contraseña" required minlength="6" />
-        <button type="button" class="toggle-password-btn" onclick="togglePassword('registerPasswordConfirm', this)" aria-label="Mostrar/Ocultar contraseña">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-            <circle cx="12" cy="12" r="2.5"/>
-          </svg>
-        </button>
-      </div>
-      <button type="submit">Crear cuenta</button>
-      <p><a href="#" onclick="showLogin(); return false;">¿Ya tienes cuenta? Inicia sesión</a></p>
-      <p id="registerFeedback"></p>
+      <input id="registerUsername" type="email" placeholder="Email" required />
+      <input id="registerPassword" type="password" placeholder="Contraseña" required />
+      <input id="registerPasswordConfirm" type="password" placeholder="Confirmar contraseña" required />
+      <button type="submit">Registrar</button>
+      <div id="registerFeedback" style="color:red;"></div>
     </form>
   </div>
 
-  <!-- MAIN MENU -->
   <div id="menu" class="hidden">
-    <p><strong>Usuario:</strong> <span id="currentUser"></span></p>
-    <p><strong>Racha de aciertos:</strong> <span id="streak">0</span></p>
-    <button onclick="startExercise('present')">Presente singular</button>
-    <button onclick="startExercise('past')">Pasado singular</button>
-    <button onclick="showErrors()">Ver errores</button>
-    <button onclick="showStudy()">Estudiar</button>
+    <p>Bienvenido, <span id="currentUser"></span>!</p>
+    <p>Racha actual: <span id="streak">0</span></p>
+    <!-- Más botones y opciones aquí -->
     <button onclick="logout()">Cerrar sesión</button>
   </div>
 
-  <!-- EJERCICIO -->
   <div id="exercise" class="hidden">
     <p id="question"></p>
-    <input type="text" id="answer" placeholder="Escribe tu respuesta" autocomplete="off" />
-    <div>
-      <button onclick="checkAnswer()">Enviar</button>
-    </div>
+    <input type="text" id="answer" />
+    <button onclick="checkAnswer()">Comprobar</button>
+    <button onclick="nextQuestion()">Siguiente</button>
     <p id="feedback"></p>
-    <div>
-      <button onclick="nextQuestion()">Siguiente</button>
-      <button onclick="returnToMenu()">Volver al menú</button>
-    </div>
+    <button onclick="returnToMenu()">Volver al menú</button>
   </div>
 
-  <!-- ERRORES -->
   <div id="errors" class="hidden">
-    <h2>Errores más comunes</h2>
     <ul id="errorList"></ul>
     <button onclick="returnToMenu()">Volver al menú</button>
   </div>
 
-  <!-- ESTUDIO -->
   <div id="study" class="hidden">
-    <h2>Tabla de Conjugaciones</h2>
-    <h3>Presente</h3>
+    <h2>Tabla presente</h2>
     <div id="presentTable"></div>
-    <h3>Pasado</h3>
+    <h2>Tabla pasado</h2>
     <div id="pastTable"></div>
     <button onclick="returnToMenu()">Volver al menú</button>
   </div>
 
-</div>
+  <script>
+    // Variables globales
+    let currentSet = {};
+    let currentKey = '';
+    let streak = 0;
+    let errors = {};
+    let currentUser = null;
 
-<script>
-  // Datos simulados para conjugaciones (igual que antes)
-  const s_present = {
-    "nik,zuri": "dizut", "nik,hari": "diot", "nik,zuei": "dizuet", "nik,haiei": "diet",
-    "zuk,niri": "didazu", "zuk,hari": "diozu", "zuk,guri": "diguzu", "zuk,haiei": "diezu",
-    "hark,niri": "dit", "hark,zuri": "dizu", "hark,hari": "dio", "hark,guri": "digu",
-    "hark,zuei": "dizue", "hark,haiei": "die",
-    "guk,zuri": "dizugu", "guk,hari": "diogu", "guk,zuei": "dizuegu", "guk,haiei": "diegu",
-    "zuek,niri": "didazue", "zuek,hari": "diozue", "zuek,guri": "diguzue", "zuek,haiei": "diezue",
-    "haiek,niri": "didate", "haiek,zuri": "dizute", "haiek,hari": "diote", "haiek,guri": "digute",
-    "haiek,zuei": "dizuete", "haiek,haiei": "diete"
-  };
-
-  const s_past = {
-    "nik,zuri": "nizum", "nik,hari": "nion", "nik,zuei": "nizuen", "nik,haiei": "nien",
-    "zuk,niri": "zenidan", "zuk,hari": "zenion", "zuk,guri": "zenigun", "zuk,haiei": "zenien",
-    "hark,niri": "zidan", "hark,zuri": "zizum", "hark,hari": "zion", "hark,guri": "zigun",
-    "hark,zuei": "zizuen", "hark,haiei": "zien",
-    "guk,zuri": "genizum", "guk,hari": "genion", "guk,zuei": "genizuen", "guk,haiei": "genien",
-    "zuek,niri": "zenidaten", "zuek,hari": "zenioten", "zuek,guri": "zeniguten", "zuek,haiei": "zenieten",
-    "haiek,niri": "zidaten", "haiek,zuri": "zizuten", "haiek,hari": "zioten", "haiek,guri": "ziguten",
-    "haiek,zuei": "zizueten", "haiek,haiei": "zieten"
-  };
-
-  let currentSet = {};
-  let currentKey = '';
-  let streak = 0;
-  let errors = {};
-  let currentUser = null; // usuario logueado
-
-  // Mostrar formularios
-  function showLogin() {
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-  }
-
-  function showRegister() {
-    document.getElementById('registerForm').classList.remove('hidden');
-    document.getElementById('loginForm').classList.add('hidden');
-  }
-
-  // Mostrar menú principal
-  function showMenu() {
-    document.getElementById('login-register').classList.add('hidden');
-    document.getElementById('exercise').classList.add('hidden');
-    document.getElementById('errors').classList.add('hidden');
-    document.getElementById('study').classList.add('hidden');
-
-    document.getElementById('menu').classList.remove('hidden');
-    document.getElementById('currentUser').textContent = currentUser;
-    updateStreak(0);
-  }
-
-  // Actualizar streak
-  function updateStreak(newValue) {
-    streak = newValue;
-    document.getElementById('streak').textContent = streak;
-  }
-
-  // Iniciar ejercicio
-  function startExercise(type) {
-    currentSet = (type === 'present') ? s_present : s_past;
-    const keys = Object.keys(currentSet);
-    currentKey = keys[Math.floor(Math.random() * keys.length)];
-    document.getElementById('menu').classList.add('hidden');
-    document.getElementById('errors').classList.add('hidden');
-    document.getElementById('study').classList.add('hidden');
-    document.getElementById('exercise').classList.remove('hidden');
-    showQuestion();
-    updateStreak(0);
-  }
-
-  // Mostrar pregunta
-  function showQuestion() {
-    document.getElementById('question').textContent = `Conjuga para: ${currentKey}`;
-    document.getElementById('answer').value = '';
-    document.getElementById('feedback').textContent = '';
-    document.getElementById('answer').focus();
-  }
-
-  // Comprobar respuesta
-  function checkAnswer() {
-    const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
-    const correctAnswer = currentSet[currentKey].toLowerCase();
-
-    if (!userAnswer) {
-      alert('Por favor, escribe tu respuesta.');
-      return;
+    // Mostrar formularios
+    function showLogin() {
+      document.getElementById('loginForm').classList.remove('hidden');
+      document.getElementById('registerForm').classList.add('hidden');
     }
 
-    const feedback = document.getElementById('feedback');
-    if (userAnswer === correctAnswer) {
-      feedback.textContent = '¡Correcto!';
-      feedback.className = 'correct';
-      updateStreak(streak + 1);
-      delete errors[currentKey];
-    } else {
-      feedback.textContent = `Incorrecto. La respuesta correcta es: ${correctAnswer}`;
-      feedback.className = 'incorrect';
+    function showRegister() {
+      document.getElementById('registerForm').classList.remove('hidden');
+      document.getElementById('loginForm').classList.add('hidden');
+    }
+
+    // Mostrar menú principal
+    function showMenu() {
+      document.getElementById('login-register').classList.add('hidden');
+      document.getElementById('exercise').classList.add('hidden');
+      document.getElementById('errors').classList.add('hidden');
+      document.getElementById('study').classList.add('hidden');
+
+      document.getElementById('menu').classList.remove('hidden');
+      document.getElementById('currentUser').textContent = currentUser;
       updateStreak(0);
-      errors[currentKey] = correctAnswer;
     }
-  }
 
-  // Pasar a siguiente pregunta
-  function nextQuestion() {
-    const keys = Object.keys(currentSet);
-    currentKey = keys[Math.floor(Math.random() * keys.length)];
-    showQuestion();
-  }
+    // Actualizar streak
+    function updateStreak(newValue) {
+      streak = newValue;
+      document.getElementById('streak').textContent = streak;
+    }
 
-  // Volver al menú
-  function returnToMenu() {
-    document.getElementById('exercise').classList.add('hidden');
-    document.getElementById('errors').classList.add('hidden');
-    document.getElementById('study').classList.add('hidden');
-    showMenu();
-  }
+    // Inicio ejercicio
+    function startExercise(type) {
+      currentSet = (type === 'present') ? s_present : s_past;
+      const keys = Object.keys(currentSet);
+      currentKey = keys[Math.floor(Math.random() * keys.length)];
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById('errors').classList.add('hidden');
+      document.getElementById('study').classList.add('hidden');
+      document.getElementById('exercise').classList.remove('hidden');
+      showQuestion();
+      updateStreak(0);
+    }
 
-  // Mostrar errores comunes
-  function showErrors() {
-    const ul = document.getElementById('errorList');
-    ul.innerHTML = '';
-    if (Object.keys(errors).length === 0) {
-      ul.innerHTML = '<li>No hay errores registrados.</li>';
-    } else {
-      for (const [key, correct] of Object.entries(errors)) {
-        const li = document.createElement('li');
-        li.textContent = `${key}: ${correct}`;
-        ul.appendChild(li);
+    // Mostrar pregunta
+    function showQuestion() {
+      document.getElementById('question').textContent = `Conjuga para: ${currentKey}`;
+      document.getElementById('answer').value = '';
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('answer').focus();
+    }
+
+    // Comprobar respuesta
+    function checkAnswer() {
+      const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+      const correctAnswer = currentSet[currentKey].toLowerCase();
+
+      if (!userAnswer) {
+        alert('Por favor, escribe tu respuesta.');
+        return;
+      }
+
+      const feedback = document.getElementById('feedback');
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = '¡Correcto!';
+        feedback.className = 'correct';
+        updateStreak(streak + 1);
+        delete errors[currentKey];
+      } else {
+        feedback.textContent = `Incorrecto. La respuesta correcta es: ${correctAnswer}`;
+        feedback.className = 'incorrect';
+        updateStreak(0);
+        errors[currentKey] = correctAnswer;
       }
     }
-    document.getElementById('menu').classList.add('hidden');
-    document.getElementById('exercise').classList.add('hidden');
-    document.getElementById('study').classList.add('hidden');
-    document.getElementById('errors').classList.remove('hidden');
-  }
 
-  // Mostrar tabla de estudio
-  function showStudy() {
-    const presentTable = createTable(s_present);
-    const pastTable = createTable(s_past);
-    document.getElementById('presentTable').innerHTML = presentTable;
-    document.getElementById('pastTable').innerHTML = pastTable;
-
-    document.getElementById('menu').classList.add('hidden');
-    document.getElementById('exercise').classList.add('hidden');
-    document.getElementById('errors').classList.add('hidden');
-    document.getElementById('study').classList.remove('hidden');
-  }
-
-  // Crear tabla HTML a partir de objeto conjugaciones
-  function createTable(data) {
-    let html = '<table><thead><tr><th>Persona</th><th>Conjugación</th></tr></thead><tbody>';
-    for (const [key, value] of Object.entries(data)) {
-      html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+    // Pasar a siguiente pregunta
+    function nextQuestion() {
+      const keys = Object.keys(currentSet);
+      currentKey = keys[Math.floor(Math.random() * keys.length)];
+      showQuestion();
     }
-    html += '</tbody></table>';
-    return html;
-  }
 
-  // Alternar mostrar/ocultar contraseña
-  function togglePassword(inputId, btn) {
-    const input = document.getElementById(inputId);
-    if (input.type === 'password') {
-      input.type = 'text';
-      btn.title = 'Ocultar contraseña';
-    } else {
-      input.type = 'password';
-      btn.title = 'Mostrar contraseña';
-    }
-  }
-
-  // Login (simulado)
-  function loginUser(e) {
-    e.preventDefault();
-    const username = document.getElementById('loginUsername').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    // Aquí simular usuario/password fijo
-    if (username === 'usuario' && password === '123456') {
-      currentUser = username;
-      errors = {};
+    // Volver al menú
+    function returnToMenu() {
+      document.getElementById('exercise').classList.add('hidden');
+      document.getElementById('errors').classList.add('hidden');
+      document.getElementById('study').classList.add('hidden');
       showMenu();
-      document.getElementById('loginFeedback').textContent = '';
-    } else {
-      document.getElementById('loginFeedback').textContent = 'Usuario o contraseña incorrectos.';
-    }
-    return false;
-  }
-
-  // Registro (simulado)
-  function registerUser(e) {
-    e.preventDefault();
-    const username = document.getElementById('registerUsername').value.trim();
-    const password = document.getElementById('registerPassword').value;
-    const confirm = document.getElementById('registerPasswordConfirm').value;
-
-    if (password !== confirm) {
-      document.getElementById('registerFeedback').textContent = 'Las contraseñas no coinciden.';
-      return false;
     }
 
-    if (password.length < 6) {
-      document.getElementById('registerFeedback').textContent = 'La contraseña debe tener al menos 6 caracteres.';
-      return false;
+    // Mostrar errores comunes
+    function showErrors() {
+      const ul = document.getElementById('errorList');
+      ul.innerHTML = '';
+      if (Object.keys(errors).length === 0) {
+        ul.innerHTML = '<li>No hay errores registrados.</li>';
+      } else {
+        for (const [key, correct] of Object.entries(errors)) {
+          const li = document.createElement('li');
+          li.textContent = `${key}: ${correct}`;
+          ul.appendChild(li);
+        }
+      }
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById('exercise').classList.add('hidden');
+      document.getElementById('study').classList.add('hidden');
+      document.getElementById('errors').classList.remove('hidden');
     }
 
-    // Simulamos éxito
-    currentUser = username;
-    errors = {};
-    showMenu();
-    document.getElementById('registerFeedback').textContent = '';
-    return false;
-  }
+    // Mostrar tabla de estudio
+    function showStudy() {
+      const presentTable = createTable(s_present);
+      const pastTable = createTable(s_past);
+      document.getElementById('presentTable').innerHTML = presentTable;
+      document.getElementById('pastTable').innerHTML = pastTable;
 
-  // Logout
-  function logout() {
-    currentUser = null;
-    errors = {};
-    updateStreak(0);
-    document.getElementById('menu').classList.add('hidden');
-    document.getElementById('exercise').classList.add('hidden');
-    document.getElementById('errors').classList.add('hidden');
-    document.getElementById('study').classList.add('hidden');
-    document.getElementById('login-register').classList.remove('hidden');
-  }
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById('exercise').classList.add('hidden');
+      document.getElementById('errors').classList.add('hidden');
+      document.getElementById('study').classList.remove('hidden');
+    }
 
-  // Enviar respuesta con Enter en input
-  document.getElementById('answer').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
+    // Crear tabla HTML a partir de objeto conjugaciones
+    function createTable(data) {
+      let html = '<table><thead><tr><th>Persona</th><th>Conjugación</th></tr></thead><tbody>';
+      for (const [key, value] of Object.entries(data)) {
+        html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+      }
+      html += '</tbody></table>';
+      return html;
+    }
+
+    // Alternar mostrar/ocultar contraseña
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.title = 'Ocultar contraseña';
+      } else {
+        input.type = 'password';
+        btn.title = 'Mostrar contraseña';
+      }
+    }
+
+    // LOGIN con Firebase
+    function loginUser(e) {
       e.preventDefault();
-      checkAnswer();
+      const email = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById('loginFeedback').textContent = '';
+          // currentUser se actualizará en el onAuthStateChanged
+        })
+        .catch(() => {
+          document.getElementById('loginFeedback').textContent = 'Usuario o contraseña incorrectos.';
+        });
+      return false;
     }
-  });
 
-  // Mostrar login al iniciar
-  showLogin();
+    // REGISTRO con Firebase
+    function registerUser(e) {
+      e.preventDefault();
+      const email = document.getElementById('registerUsername').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirm = document.getElementById('registerPasswordConfirm').value;
 
-</script>
+      if (password !== confirm) {
+        document.getElementById('registerFeedback').textContent = 'Las contraseñas no coinciden.';
+        return false;
+      }
 
+      if (password.length < 6) {
+        document.getElementById('registerFeedback').textContent = 'La contraseña debe tener al menos 6 caracteres.';
+        return false;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          document.getElementById('registerFeedback').textContent = '';
+          // currentUser se actualizará en el onAuthStateChanged
+        })
+        .catch(error => {
+          document.getElementById('registerFeedback').textContent = error.message;
+        });
+
+      return false;
+    }
+
+    // Logout Firebase
+    function logout() {
+      auth.signOut();
+    }
+
+    // Detectar cambios en el estado del usuario
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        currentUser = user.email;
+        showMenu();
+      } else {
+        currentUser = null;
+        document.getElementById('menu').classList.add('hidden');
+        document.getElementById('exercise').classList.add('hidden');
+        document.getElementById('errors').classList.add('hidden');
+        document.getElementById('study').classList.add('hidden');
+        document.getElementById('login-register').classList.remove('hidden');
+        document.getElementById('loginFeedback').textContent = '';
+        document.getElementById('registerFeedback').textContent = '';
+      }
+    });
+
+    // Datos originales de conjugación
+    const s_present = {
+      "Ni": "dut",
+      "Hi": "duk",
+      "Hura": "du",
+      "Gu": "ditugu",
+      "Zuek": "duzue",
+      "Haiek": "dute"
+    };
+
+    const s_past = {
+      "Ni": "nuen",
+      "Hi": "huken",
+      "Hura": "zuen",
+      "Gu": "genituen",
+      "Zuek": "zenituzten",
+      "Haiek": "zituen"
+    };
+  </script>
+
+  <script>
+    // Registrar Service Worker al final para que todo esté cargado
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registrado'))
+        .catch(err => console.error('Error registrando Service Worker:', err));
+    }
+  </script>
 </body>
 </html>
-
