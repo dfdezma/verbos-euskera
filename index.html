@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Práctica de Verbos en Euskera</title>
+
   <style>
     /* Reset básico */
     * {
@@ -52,7 +53,7 @@
       border-radius: 4px;
       transition: border-color 0.3s ease;
     }
-    input:focus {
+    input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
       outline: none;
       border-color: #2980b9;
     }
@@ -105,35 +106,56 @@
       font-size: 1.1rem;
       padding: 0;
     }
-
-    /* Estilos para tabla de estudio */
-    #study {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 40px;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    #study h2 {
-      font-size: 2em;
-      margin-bottom: 30px;
+    #menu p {
+      margin-bottom: 15px;
+      font-weight: 600;
       text-align: center;
-      color: #333;
+      font-size: 1.1rem;
     }
-    #study h3 {
-      color: #444;
-      margin-top: 20px;
+    #menu button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    #exercise #question {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: 600;
+      color: #2c3e50;
+      white-space: pre-line;
+    }
+    #exercise input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    #feedback {
+      min-height: 24px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    #feedback.correct {
+      color: #27ae60;
+    }
+    #feedback.incorrect {
+      color: #e74c3c;
+    }
+    #errorList {
+      list-style: inside disc;
+      color: #34495e;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 0 auto 15px;
+      margin-bottom: 15px;
       font-size: 0.95rem;
     }
     th, td {
       border: 1px solid #ddd;
       padding: 8px;
-      text-align: center;
-      vertical-align: middle;
+      text-align: left;
     }
     th {
       background-color: #2980b9;
@@ -142,12 +164,15 @@
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-    /* Estilo específico para primera columna */
+    /* Primera columna */
     table th:first-child,
     table td:first-child {
       background-color: #2980b9;
       color: white;
-      vertical-align: middle;
+    }
+    table th, table td {
+      text-align: center; /* centra horizontalmente */
+      vertical-align: middle; /* centra verticalmente */
     }
 
   </style>
@@ -157,20 +182,87 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "...",
-      authDomain: "...",
-      projectId: "...",
-      storageBucket: "...",
-      messagingSenderId: "...",
-      appId: "...",
-      measurementId: "..."
+      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc",
+      authDomain: "verboseuskeraapp.firebaseapp.com",
+      projectId: "verboseuskeraapp",
+      storageBucket: "verboseuskeraapp.appspot.com",
+      messagingSenderId: "1002538902447",
+      appId: "1:1002538902447:web:b6d1f2795fef697d22c55a",
+      measurementId: "G-83R58Q7B8J"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
   </script>
 </head>
+ <section id="study" class="hidden" aria-live="polite"
+  style="max-width: 1000px; margin: 40px auto; 
+         /* quita o comenta la línea de fondo, border-radius y box-shadow */
+         /* background: #ffffff; */
+         /* border-radius: 16px; */
+         /* box-shadow: 0 4px 20px rgba(0,0,0,0.08); */
+         padding: 40px; font-family: 'Segoe UI', sans-serif;">
+
+    <h2 style="font-size: 2em; margin-bottom: 30px; text-align: center; color: #333;">Tabla de Conjugaciones: Presente y Pasado</h2>
+  
+    <!-- Presente -->
+    <h3 style="color: #444; margin-top: 20px;">Presente</h3>
+    <table style="max-width: 600px; margin: 0 auto; border-collapse: collapse; font-size: 1em;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th style="padding: 12px; text-align: center; border: 1px solid #ccc;">→ / ↓</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">niri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th style="background: #2980b9;">nik</th>   <td></td>        <td>dizut</td>   <td>diot</td>    <td></td>        <td>dizuet</td>   <td>diet</td></tr>
+        <tr><th style="background: #2980b9;">zuk</th>   <td>didazu</td>  <td></td>        <td>diozu</td>  <td>diguzu</td>  <td></td>         <td>diezu</td></tr>
+        <tr><th style="background: #2980b9;">hark</th>  <td>dit</td>     <td>dizu</td>    <td>dio</td>     <td>digu</td>     <td>dizue</td>    <td>die</td></tr>
+        <tr><th style="background: #2980b9;">guk</th>   <td></td>        <td>dizugu</td>  <td>diogu</td>   <td></td>        <td>dizuegu</td>  <td>diegu</td></tr>
+        <tr><th style="background: #2980b9;">zuek</th>  <td>didazue</td> <td></td>        <td>diozue</td> <td>diguzue</td> <td></td>         <td>diezue</td></tr>
+        <tr><th style="background: #2980b9;">haiek</th> <td>didate</td>  <td>dizute</td>  <td>diote</td>   <td>digute</td>   <td>dizuete</td>  <td>diete</td></tr>
+      </tbody>
+    </table>
+  
+    <!-- Pasado -->
+    <h3 style="color: #444; margin-top: 20px;">Pasado</h3>
+   <table style="max-width: 600px; margin: 0 auto; border-collapse: collapse; font-size: 1em;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th style="padding: 12px; text-align: center; border: 1px solid #ccc;">→ / ↓</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">niri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th style="background: #2980b9;">nik</th>   <td></td>           <td>nizun</td>      <td>nion</td>     <td></td>          <td>nizuen</td>    <td>nien</td></tr>
+        <tr><th style="background: #2980b9;">zuk</th>   <td>zenidan</td>    <td></td>           <td>zenion</td>   <td>zenigun</td>   <td></td>          <td>zenien</td></tr>
+        <tr><th style="background: #2980b9;">hark</th>  <td>zidan</td>      <td>zizun</td>       <td>zion</td>     <td>zigun</td>     <td>zizuen</td>    <td>zien</td></tr>
+        <tr><th style="background: #2980b9;">guk</th>   <td></td>           <td>genizun</td>     <td>genion</td>   <td></td>          <td>genizuen</td>  <td>genien</td></tr>
+        <tr><th style="background: #2980b9;">zuek</th>  <td>zenidaten</td>  <td></td>            <td>zenioten</td> <td>zeniguten</td> <td></td>          <td>zenieten</td></tr>
+        <tr><th style="background: #2980b9;">haiek</th> <td>zidaten</td>    <td>zizuten</td>     <td>zioten</td>   <td>ziguten</td>   <td>zizueten</td>  <td>zieten</td></tr>
+      </tbody>
+    </table>
+  
+    <div style="text-align: center; margin-top: 40px;">
+      <button onclick="showMenu()" class="secondary" style="padding: 12px 24px; font-size: 1em; background: #f0f0f0; border: 1px solid #ccc; border-radius: 8px; cursor: pointer;">
+        Volver al Menú
+      </button>
+    </div>
+  </section>
+
+
 
 <body>
+
   <h1>Práctica de Verbos en Euskera</h1>
 
   <section id="login-register">
@@ -216,6 +308,7 @@
     <button onclick="logout()">Cerrar sesión</button>
   </section>
 
+
   <section id="exercise" class="hidden" aria-live="polite">
     <h2>Ejercicio de Conjugación</h2>
     <div id="question"></div>
@@ -233,47 +326,6 @@
     <ul id="errorList"></ul>
     <button onclick="clearErrors()">Borrar Errores</button>
     <button onclick="showMenu()" class="secondary">Volver al Menú</button>
-  </section>
-
-  <section id="study" class="hidden" aria-live="polite">
-    <h2>Tabla de Conjugaciones: Presente y Pasado</h2>
-    <h3>Presente</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>→ / ↓</th><th>niri</th><th>zuri</th><th>hari</th><th>guri</th><th>zuei</th><th>haiei</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><th>nik</th><td></td><td>dizut</td><td>diot</td><td></td><td>dizuet</td><td>diet</td></tr>
-        <tr><th>zuk</th><td>didazu</td><td></td><td>diozu</td><td>diguzu</td><td></td><td>diezu</td></tr>
-        <tr><th>hark</th><td>dit</td><td>dizu</td><td>dio</td><td>digu</td><td>dizue</td><td>die</td></tr>
-        <tr><th>guk</th><td></td><td>dizugu</td><td>diogu</td><td></td><td>dizuegu</td><td>diegu</td></tr>
-        <tr><th>zuek</th><td>didazue</td><td></td><td>diozue</td><td>diguzue</td><td></td><td>diezue</td></tr>
-        <tr><th>haiek</th><td>didate</td><td>dizute</td><td>diote</td><td>digute</td><td>dizuete</td><td>diete</td></tr>
-      </tbody>
-    </table>
-    <h3>Pasado</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>→ / ↓</th><th>niri</th><th>zuri</th><th>hari</th><th>guri</th><th>zuei</th><th>haiei</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><th>nik</th><td></td><td>nizun</td><td>nion</td><td></td><td>nizuen</td><td>nien</td></tr>
-        <tr><th>zuk</th><td>zenidan</td><td></td><td>zenion</td><td>zenigun</td><td></td><td>zenien</td></tr>
-        <tr><th>hark</th><td>zidan</td><td>zizun</td><td>zion</td><td>zigun</td><td>zizuen</td><td>zien</td></tr>
-        <tr><th>guk</th><td></td><td>genizun</td><td>genion</td><td></td><td>genizuen</td><td>genien</td></tr>
-        <tr><th>zuek</th><td>zenidaten</td><td></td><td>zenioten</td><td>zeniguten</td><td></td><td>zenieten</td></tr>
-        <tr><th>haiek</th><td>zidaten</td><td>zizuten</td><td>zioten</td><td>ziguten</td><td>zizueten</td><td>zieten</td></tr>
-      </tbody>
-    </table>
-    <div style="text-align: center; margin-top: 40px;">
-      <button onclick="showMenu()" class="secondary" style="padding:12px 24px; font-size:1em; background:#f0f0f0; border:1px solid #ccc; border-radius:8px; cursor:pointer;">
-        Volver al Menú
-      </button>
-    </div>
   </section>
 
   <script>
@@ -451,7 +503,7 @@
       const pairs = Object.keys(s_present[currentVerb]);
       currentPairKey = getRandom(pairs);
 
-      questionDiv.textContent = `Verbo: "${currentVerb}"\nConjuga para: ${pronounLabels[currentPairKey] || currentPairKey}`;
+      questionDiv.textContent = Verbo: "${currentVerb}"\nConjuga para: ${pronounLabels[currentPairKey] || currentPairKey};
     }
 
     function checkAnswer(e) {
@@ -465,7 +517,7 @@
         nextButton.classList.remove('hidden');
         answerInput.disabled = true;
       } else {
-        feedbackDiv.textContent = `Incorrecto. La respuesta correcta es: "${correctAnswer}"`;
+        feedbackDiv.textContent = Incorrecto. La respuesta correcta es: "${correctAnswer}";
         feedbackDiv.className = "incorrect";
 
         // Guardar error para mostrar después
@@ -501,7 +553,7 @@
       } else {
         errors.forEach((err, i) => {
           const li = document.createElement('li');
-          li.textContent = `Verbo "${err.verbo}", ${err.pronombres}: respuesta correcta "${err.respuestaCorrecta}", tú escribiste "${err.respuestaUsuario}"`;
+          li.textContent = Verbo "${err.verbo}", ${err.pronombres}: respuesta correcta "${err.respuestaCorrecta}", tú escribiste "${err.respuestaUsuario}";
           errorList.appendChild(li);
         });
       }
