@@ -181,7 +181,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc",
+      apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc", // ¡Asegúrate de que esta API Key sea la de tu proyecto!
       authDomain: "verboseuskeraapp.firebaseapp.com",
       projectId: "verboseuskeraapp",
       storageBucket: "verboseuskeraapp.appspot.com",
@@ -232,7 +232,7 @@
           <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
           <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
           <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
-          <th style="padding: 12px; border: 12px; border: 1px solid #ccc;">zuei</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
           <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
         </tr>
       </thead>
@@ -343,7 +343,8 @@
       studySection.classList.remove('hidden');
     }
 
-    function hideStudy() { // Esta función no es llamada en tu código actual.
+    // No se usa actualmente, pero podría ser útil si implementas un botón de "ocultar estudio"
+    function hideStudy() {
       studySection.classList.add('hidden');
     }
 
@@ -351,7 +352,7 @@
     // Firebase auth handlers
     function loginUser(e) {
       e.preventDefault();
-      loginFeedback.textContent = "";
+      loginFeedback.textContent = ""; // Limpiar mensajes de feedback previos
       const email = document.getElementById('loginUsername').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
 
@@ -359,17 +360,19 @@
         .then(() => {
           loginRegisterSection.classList.add('hidden');
           menuSection.classList.remove('hidden');
-          loginForm.reset();
+          loginForm.reset(); // Limpiar formulario después de éxito
+          console.log("Usuario ha iniciado sesión con éxito:", email);
         })
         .catch(error => {
-          loginFeedback.textContent = "Error: " + error.message;
+          loginFeedback.textContent = "Error al iniciar sesión: " + error.message;
+          console.error("Error de inicio de sesión:", error);
         });
-      return false;
+      return false; // Prevenir el envío tradicional del formulario
     }
 
     function registerUser(e) {
       e.preventDefault();
-      registerFeedback.textContent = "";
+      registerFeedback.textContent = ""; // Limpiar mensajes de feedback previos
       const email = document.getElementById('registerUsername').value.trim();
       const password = document.getElementById('registerPassword').value.trim();
       const confirmPassword = document.getElementById('registerPasswordConfirm').value.trim();
@@ -385,14 +388,16 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
-          registerFeedback.textContent = "Usuario registrado, por favor inicia sesión.";
-          registerForm.reset();
-          showLogin();
+          registerFeedback.textContent = "Usuario registrado con éxito. Por favor, inicia sesión.";
+          registerForm.reset(); // Limpiar formulario después de éxito
+          showLogin(); // Mostrar el formulario de inicio de sesión
+          console.log("Usuario registrado con éxito:", email);
         })
         .catch(error => {
-          registerFeedback.textContent = "Error: " + error.message;
+          registerFeedback.textContent = "Error al registrar usuario: " + error.message;
+          console.error("Error de registro:", error);
         });
-      return false;
+      return false; // Prevenir el envío tradicional del formulario
     }
 
     function logout() {
@@ -400,8 +405,11 @@
         menuSection.classList.add('hidden');
         exerciseSection.classList.add('hidden');
         errorsSection.classList.add('hidden');
-        studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio también al cerrar sesión
-        loginRegisterSection.classList.remove('hidden');
+        studySection.classList.add('hidden'); // Ocultar sección de estudio
+        loginRegisterSection.classList.remove('hidden'); // Mostrar la pantalla de login/registro
+        console.log("Sesión cerrada con éxito.");
+      }).catch(error => {
+        console.error("Error al cerrar sesión:", error);
       });
     }
 
@@ -423,14 +431,15 @@
       const input = document.getElementById(inputId);
       if (input.type === "password") {
         input.type = "text";
-        btn.textContent = "🙈";
+        btn.textContent = "🙈"; // Icono de ojo tachado
       } else {
         input.type = "password";
-        btn.textContent = "👁️";
+        btn.textContent = "👁️"; // Icono de ojo
       }
     }
 
     // Datos verbales - estructura con pares de pronombres como claves (string con guion)
+    // Se ha completado 'izan' para que incluya todas las combinaciones de la tabla
     const s_present = {
       'izan': {
         'nik-zuri': ['dizut', 0],
@@ -442,7 +451,7 @@
         'zuk-guri': ['diguzu', 0],
         'zuk-haiei': ['diezu', 0],
         'hark-niri': ['dit', 0],
-        'hark-zuri': ['dizu', 0], /* Corregido: "dizu" en lugar de "dit" */
+        'hark-zuri': ['dizu', 0],
         'hark-hari': ['dio', 0],
         'hark-guri': ['digu', 0],
         'hark-zuei': ['dizue', 0],
@@ -464,7 +473,8 @@
       }
     };
 
-    const s_past = { // Añadido el objeto para el pasado
+    // Añadido el objeto para el pasado, con los datos completos de la tabla
+    const s_past = {
       'izan': {
         'nik-zuri': ['nizun', 0],
         'nik-hari': ['nion', 0],
@@ -499,7 +509,7 @@
 
     // Puedes agregar otros tiempos y verbos aquí...
 
-    // Etiquetas para mostrar
+    // Etiquetas para mostrar los pronombres
     const pronounLabels = {
       'nik-zuri': 'nik → zuri',
       'nik-hari': 'nik → hari',
@@ -515,13 +525,17 @@
       'hark-guri': 'hark → guri',
       'hark-zuei': 'hark → zuei',
       'hark-haiei': 'hark → haiei',
+      'guk-niri': 'guk → niri', // Añadido, aunque vacío en la tabla
       'guk-zuri': 'guk → zuri',
       'guk-hari': 'guk → hari',
+      'guk-guri': 'guk → guri', // Añadido, aunque vacío en la tabla
       'guk-zuei': 'guk → zuei',
       'guk-haiei': 'guk → haiei',
       'zuek-niri': 'zuek → niri',
+      'zuek-zuri': 'zuek → zuri', // Añadido, aunque vacío en la tabla
       'zuek-hari': 'zuek → hari',
       'zuek-guri': 'zuek → guri',
+      'zuek-zuei': 'zuek → zuei', // Añadido, aunque vacío en la tabla
       'zuek-haiei': 'zuek → haiei',
       'haiek-niri': 'haiek → niri',
       'haiek-zuri': 'haiek → zuri',
@@ -531,10 +545,11 @@
       'haiek-haiei': 'haiek → haiei'
     };
 
+
     // Variables estado ejercicio
     let currentVerb = null;
     let currentPairKey = null;
-    let currentTense = null; // Variable para almacenar el tiempo actual (presente/pasado)
+    let currentTense = null; // Para saber si es presente o pasado
 
     // Errores guardados en localStorage
     let errors = JSON.parse(localStorage.getItem('errors')) || [];
@@ -548,6 +563,7 @@
     function startExercise() {
       menuSection.classList.add('hidden');
       errorsSection.classList.add('hidden');
+      studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
       exerciseSection.classList.remove('hidden');
       nextQuestion();
     }
@@ -563,35 +579,37 @@
       // Elegir aleatoriamente entre presente y pasado
       const tenses = ['present', 'past'];
       currentTense = getRandom(tenses);
-      const selectedTenseData = currentTense === 'present' ? s_present : s_past;
+      const selectedTenseData = (currentTense === 'present') ? s_present : s_past;
 
       currentVerb = getRandom(Object.keys(selectedTenseData));
       const pairs = Object.keys(selectedTenseData[currentVerb]);
       currentPairKey = getRandom(pairs);
 
-      const tenseLabel = currentTense === 'present' ? 'Presente' : 'Pasado';
+      const tenseLabel = (currentTense === 'present') ? 'Presente' : 'Pasado';
+      // Uso de template literals con backticks
       questionDiv.textContent = `Verbo: "${currentVerb}" (${tenseLabel})\nConjuga para: ${pronounLabels[currentPairKey] || currentPairKey}`;
     }
 
     function checkAnswer(e) {
       e.preventDefault();
       const userAnswer = answerInput.value.trim().toLowerCase();
-      const selectedTenseData = currentTense === 'present' ? s_present : s_past;
+      const selectedTenseData = (currentTense === 'present') ? s_present : s_past;
       const correctAnswer = selectedTenseData[currentVerb][currentPairKey][0].toLowerCase();
 
       if (userAnswer === correctAnswer) {
         feedbackDiv.textContent = "¡Correcto! 🎉";
-        feedbackDiv.className = "correct";
+        feedbackDiv.className = "feedback correct"; // Añadir clase 'feedback' también
         nextButton.classList.remove('hidden');
         answerInput.disabled = true;
       } else {
+        // Uso de template literals con backticks
         feedbackDiv.textContent = `Incorrecto. La respuesta correcta es: "${correctAnswer}"`;
-        feedbackDiv.className = "incorrect";
+        feedbackDiv.className = "feedback incorrect"; // Añadir clase 'feedback' también
 
         // Guardar error para mostrar después
         errors.push({
           verbo: currentVerb,
-          tiempo: currentTense === 'present' ? 'Presente' : 'Pasado',
+          tiempo: currentTense === 'present' ? 'Presente' : 'Pasado', // Guardar el tiempo verbal
           pronombres: pronounLabels[currentPairKey] || currentPairKey,
           respuestaCorrecta: correctAnswer,
           respuestaUsuario: userAnswer
@@ -606,8 +624,8 @@
     function showMenu() {
       exerciseSection.classList.add('hidden');
       errorsSection.classList.add('hidden');
+      studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
       menuSection.classList.remove('hidden');
-      studySection.classList.add('hidden');
     }
 
     // Mostrar errores
@@ -623,6 +641,7 @@
       } else {
         errors.forEach((err) => {
           const li = document.createElement('li');
+          // Uso de template literals con backticks
           li.textContent = `Verbo "${err.verbo}" (${err.tiempo}), ${err.pronombres}: respuesta correcta "${err.respuestaCorrecta}", tú escribiste "${err.respuestaUsuario}"`;
           errorList.appendChild(li);
         });
@@ -633,7 +652,7 @@
       if (confirm('¿Seguro que quieres borrar todos los errores?')) {
         errors = [];
         localStorage.removeItem('errors');
-        showErrors();
+        showErrors(); // Volver a renderizar la lista vacía
       }
     }
 
