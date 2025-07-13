@@ -177,7 +177,6 @@
 
   </style>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
@@ -194,17 +193,13 @@
     const auth = firebase.auth();
   </script>
 </head>
- <section id="study" class="hidden" aria-live="polite"
-  style="max-width: 1000px; margin: 40px auto; 
-         /* quita o comenta la línea de fondo, border-radius y box-shadow */
-         /* background: #ffffff; */
-         /* border-radius: 16px; */
-         /* box-shadow: 0 4px 20px rgba(0,0,0,0.08); */
+<body>
+  <section id="study" class="hidden" aria-live="polite"
+  style="max-width: 1000px; margin: 40px auto;
          padding: 40px; font-family: 'Segoe UI', sans-serif;">
 
     <h2 style="font-size: 2em; margin-bottom: 30px; text-align: center; color: #333;">Tabla de Conjugaciones: Presente y Pasado</h2>
-  
-    <!-- Presente -->
+
     <h3 style="color: #444; margin-top: 20px;">Presente</h3>
     <table style="max-width: 600px; margin: 0 auto; border-collapse: collapse; font-size: 1em;">
       <thead>
@@ -219,16 +214,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr><th style="background: #2980b9;">nik</th>   <td></td>        <td>dizut</td>   <td>diot</td>    <td></td>        <td>dizuet</td>   <td>diet</td></tr>
-        <tr><th style="background: #2980b9;">zuk</th>   <td>didazu</td>  <td></td>        <td>diozu</td>  <td>diguzu</td>  <td></td>         <td>diezu</td></tr>
-        <tr><th style="background: #2980b9;">hark</th>  <td>dit</td>     <td>dizu</td>    <td>dio</td>     <td>digu</td>     <td>dizue</td>    <td>die</td></tr>
-        <tr><th style="background: #2980b9;">guk</th>   <td></td>        <td>dizugu</td>  <td>diogu</td>   <td></td>        <td>dizuegu</td>  <td>diegu</td></tr>
-        <tr><th style="background: #2980b9;">zuek</th>  <td>didazue</td> <td></td>        <td>diozue</td> <td>diguzue</td> <td></td>         <td>diezue</td></tr>
-        <tr><th style="background: #2980b9;">haiek</th> <td>didate</td>  <td>dizute</td>  <td>diote</td>   <td>digute</td>   <td>dizuete</td>  <td>diete</td></tr>
+        <tr><th style="background: #fafafa;">nik</th>   <td></td>        <td>dizut</td>   <td>diot</td>    <td></td>        <td>dizuet</td>   <td>diet</td></tr>
+        <tr><th style="background: #fafafa;">zuk</th>   <td>didazu</td>  <td></td>        <td>diozu</td>  <td>diguzu</td>  <td></td>         <td>diezu</td></tr>
+        <tr><th style="background: #fafafa;">hark</th>  <td>dit</td>     <td>dizu</td>    <td>dio</td>     <td>digu</td>     <td>dizue</td>    <td>die</td></tr>
+        <tr><th style="background: #fafafa;">guk</th>   <td></td>        <td>dizugu</td>  <td>diogu</td>   <td></td>        <td>dizuegu</td>  <td>diegu</td></tr>
+        <tr><th style="background: #fafafa;">zuek</th>  <td>didazue</td> <td></td>        <td>diozue</td> <td>diguzue</td> <td></td>         <td>diezue</td></tr>
+        <tr><th style="background: #fafafa;">haiek</th> <td>didate</td>  <td>dizute</td>  <td>diote</td>   <td>digute</td>   <td>dizuete</td>  <td>diete</td></tr>
       </tbody>
     </table>
-  
-    <!-- Pasado -->
+
     <h3 style="color: #444; margin-top: 20px;">Pasado</h3>
    <table style="max-width: 600px; margin: 0 auto; border-collapse: collapse; font-size: 1em;">
       <thead>
@@ -238,30 +232,26 @@
           <th style="padding: 12px; border: 1px solid #ccc;">zuri</th>
           <th style="padding: 12px; border: 1px solid #ccc;">hari</th>
           <th style="padding: 12px; border: 1px solid #ccc;">guri</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">zuei</th>
+          <th style="padding: 12px; border: 12px; border: 1px solid #ccc;">zuei</th>
           <th style="padding: 12px; border: 1px solid #ccc;">haiei</th>
         </tr>
       </thead>
       <tbody>
-        <tr><th style="background: #2980b9;">nik</th>   <td></td>           <td>nizun</td>      <td>nion</td>     <td></td>          <td>nizuen</td>    <td>nien</td></tr>
-        <tr><th style="background: #2980b9;">zuk</th>   <td>zenidan</td>    <td></td>           <td>zenion</td>   <td>zenigun</td>   <td></td>          <td>zenien</td></tr>
-        <tr><th style="background: #2980b9;">hark</th>  <td>zidan</td>      <td>zizun</td>       <td>zion</td>     <td>zigun</td>     <td>zizuen</td>    <td>zien</td></tr>
-        <tr><th style="background: #2980b9;">guk</th>   <td></td>           <td>genizun</td>     <td>genion</td>   <td></td>          <td>genizuen</td>  <td>genien</td></tr>
-        <tr><th style="background: #2980b9;">zuek</th>  <td>zenidaten</td>  <td></td>            <td>zenioten</td> <td>zeniguten</td> <td></td>          <td>zenieten</td></tr>
-        <tr><th style="background: #2980b9;">haiek</th> <td>zidaten</td>    <td>zizuten</td>     <td>zioten</td>   <td>ziguten</td>   <td>zizueten</td>  <td>zieten</td></tr>
+        <tr><th style="background: #f2f2f2;">nik</th>   <td></td>           <td>nizun</td>      <td>nion</td>     <td></td>          <td>nizuen</td>    <td>nien</td></tr>
+        <tr><th style="background: #f2f2f2;">zuk</th>   <td>zenidan</td>    <td></td>           <td>zenion</td>   <td>zenigun</td>   <td></td>          <td>zenien</td></tr>
+        <tr><th style="background: #f2f2f2;">hark</th>  <td>zidan</td>      <td>zizun</td>       <td>zion</td>     <td>zigun</td>     <td>zizuen</td>    <td>zien</td></tr>
+        <tr><th style="background: #f2f2f2;">guk</th>   <td></td>           <td>genizun</td>     <td>genion</td>   <td></td>          <td>genizuen</td>  <td>genien</td></tr>
+        <tr><th style="background: #f2f2f2;">zuek</th>  <td>zenidaten</td>  <td></td>            <td>zenioten</td> <td>zeniguten</td> <td></td>          <td>zenieten</td></tr>
+        <tr><th style="background: #f2f2f2;">haiek</th> <td>zidaten</td>    <td>zizuten</td>     <td>zioten</td>   <td>ziguten</td>   <td>zizueten</td>  <td>zieten</td></tr>
       </tbody>
     </table>
-  
+
     <div style="text-align: center; margin-top: 40px;">
       <button onclick="showMenu()" class="secondary" style="padding: 12px 24px; font-size: 1em; background: #f0f0f0; border: 1px solid #ccc; border-radius: 8px; cursor: pointer;">
         Volver al Menú
       </button>
     </div>
   </section>
-
-
-
-<body>
 
   <h1>Práctica de Verbos en Euskera</h1>
 
@@ -352,8 +342,8 @@
       errorsSection.classList.add('hidden');
       studySection.classList.remove('hidden');
     }
-    
-    function hideStudy() {
+
+    function hideStudy() { // Esta función no es llamada en tu código actual.
       studySection.classList.add('hidden');
     }
 
@@ -410,6 +400,7 @@
         menuSection.classList.add('hidden');
         exerciseSection.classList.add('hidden');
         errorsSection.classList.add('hidden');
+        studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio también al cerrar sesión
         loginRegisterSection.classList.remove('hidden');
       });
     }
@@ -451,11 +442,62 @@
         'zuk-guri': ['diguzu', 0],
         'zuk-haiei': ['diezu', 0],
         'hark-niri': ['dit', 0],
-        'hark-zuri': ['dit', 0]
+        'hark-zuri': ['dizu', 0], /* Corregido: "dizu" en lugar de "dit" */
+        'hark-hari': ['dio', 0],
+        'hark-guri': ['digu', 0],
+        'hark-zuei': ['dizue', 0],
+        'hark-haiei': ['die', 0],
+        'guk-zuri': ['dizugu', 0],
+        'guk-hari': ['diogu', 0],
+        'guk-zuei': ['dizuegu', 0],
+        'guk-haiei': ['diegu', 0],
+        'zuek-niri': ['didazue', 0],
+        'zuek-hari': ['diozue', 0],
+        'zuek-guri': ['diguzue', 0],
+        'zuek-haiei': ['diezue', 0],
+        'haiek-niri': ['didate', 0],
+        'haiek-zuri': ['dizute', 0],
+        'haiek-hari': ['diote', 0],
+        'haiek-guri': ['digute', 0],
+        'haiek-zuei': ['dizuete', 0],
+        'haiek-haiei': ['diete', 0]
       }
     };
 
-    // Si quieres, agrega otros tiempos y verbos aquí...
+    const s_past = { // Añadido el objeto para el pasado
+      'izan': {
+        'nik-zuri': ['nizun', 0],
+        'nik-hari': ['nion', 0],
+        'nik-zuei': ['nizuen', 0],
+        'nik-haiei': ['nien', 0],
+        'zuk-niri': ['zenidan', 0],
+        'zuk-hari': ['zenion', 0],
+        'zuk-guri': ['zenigun', 0],
+        'zuk-haiei': ['zenien', 0],
+        'hark-niri': ['zidan', 0],
+        'hark-zuri': ['zizun', 0],
+        'hark-hari': ['zion', 0],
+        'hark-guri': ['zigun', 0],
+        'hark-zuei': ['zizuen', 0],
+        'hark-haiei': ['zien', 0],
+        'guk-zuri': ['genizun', 0],
+        'guk-hari': ['genion', 0],
+        'guk-zuei': ['genizuen', 0],
+        'guk-haiei': ['genien', 0],
+        'zuek-niri': ['zenidaten', 0],
+        'zuek-hari': ['zenioten', 0],
+        'zuek-guri': ['zeniguten', 0],
+        'zuek-haiei': ['zenieten', 0],
+        'haiek-niri': ['zidaten', 0],
+        'haiek-zuri': ['zizuten', 0],
+        'haiek-hari': ['zioten', 0],
+        'haiek-guri': ['ziguten', 0],
+        'haiek-zuei': ['zizueten', 0],
+        'haiek-haiei': ['zieten', 0]
+      }
+    };
+
+    // Puedes agregar otros tiempos y verbos aquí...
 
     // Etiquetas para mostrar
     const pronounLabels = {
@@ -469,11 +511,30 @@
       'zuk-haiei': 'zuk → haiei',
       'hark-niri': 'hark → niri',
       'hark-zuri': 'hark → zuri',
+      'hark-hari': 'hark → hari',
+      'hark-guri': 'hark → guri',
+      'hark-zuei': 'hark → zuei',
+      'hark-haiei': 'hark → haiei',
+      'guk-zuri': 'guk → zuri',
+      'guk-hari': 'guk → hari',
+      'guk-zuei': 'guk → zuei',
+      'guk-haiei': 'guk → haiei',
+      'zuek-niri': 'zuek → niri',
+      'zuek-hari': 'zuek → hari',
+      'zuek-guri': 'zuek → guri',
+      'zuek-haiei': 'zuek → haiei',
+      'haiek-niri': 'haiek → niri',
+      'haiek-zuri': 'haiek → zuri',
+      'haiek-hari': 'haiek → hari',
+      'haiek-guri': 'haiek → guri',
+      'haiek-zuei': 'haiek → zuei',
+      'haiek-haiei': 'haiek → haiei'
     };
 
     // Variables estado ejercicio
     let currentVerb = null;
     let currentPairKey = null;
+    let currentTense = null; // Variable para almacenar el tiempo actual (presente/pasado)
 
     // Errores guardados en localStorage
     let errors = JSON.parse(localStorage.getItem('errors')) || [];
@@ -499,17 +560,24 @@
       answerInput.disabled = false;
       answerInput.focus();
 
-      currentVerb = getRandom(Object.keys(s_present));
-      const pairs = Object.keys(s_present[currentVerb]);
+      // Elegir aleatoriamente entre presente y pasado
+      const tenses = ['present', 'past'];
+      currentTense = getRandom(tenses);
+      const selectedTenseData = currentTense === 'present' ? s_present : s_past;
+
+      currentVerb = getRandom(Object.keys(selectedTenseData));
+      const pairs = Object.keys(selectedTenseData[currentVerb]);
       currentPairKey = getRandom(pairs);
 
-      questionDiv.textContent = Verbo: "${currentVerb}"\nConjuga para: ${pronounLabels[currentPairKey] || currentPairKey};
+      const tenseLabel = currentTense === 'present' ? 'Presente' : 'Pasado';
+      questionDiv.textContent = `Verbo: "${currentVerb}" (${tenseLabel})\nConjuga para: ${pronounLabels[currentPairKey] || currentPairKey}`;
     }
 
     function checkAnswer(e) {
       e.preventDefault();
       const userAnswer = answerInput.value.trim().toLowerCase();
-      const correctAnswer = s_present[currentVerb][currentPairKey][0].toLowerCase();
+      const selectedTenseData = currentTense === 'present' ? s_present : s_past;
+      const correctAnswer = selectedTenseData[currentVerb][currentPairKey][0].toLowerCase();
 
       if (userAnswer === correctAnswer) {
         feedbackDiv.textContent = "¡Correcto! 🎉";
@@ -517,12 +585,13 @@
         nextButton.classList.remove('hidden');
         answerInput.disabled = true;
       } else {
-        feedbackDiv.textContent = Incorrecto. La respuesta correcta es: "${correctAnswer}";
+        feedbackDiv.textContent = `Incorrecto. La respuesta correcta es: "${correctAnswer}"`;
         feedbackDiv.className = "incorrect";
 
         // Guardar error para mostrar después
         errors.push({
           verbo: currentVerb,
+          tiempo: currentTense === 'present' ? 'Presente' : 'Pasado',
           pronombres: pronounLabels[currentPairKey] || currentPairKey,
           respuestaCorrecta: correctAnswer,
           respuestaUsuario: userAnswer
@@ -545,15 +614,16 @@
     function showErrors() {
       menuSection.classList.add('hidden');
       exerciseSection.classList.add('hidden');
+      studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
       errorsSection.classList.remove('hidden');
 
       errorList.innerHTML = '';
       if (errors.length === 0) {
         errorList.innerHTML = '<li>No has cometido errores aún. ¡Bien hecho!</li>';
       } else {
-        errors.forEach((err, i) => {
+        errors.forEach((err) => {
           const li = document.createElement('li');
-          li.textContent = Verbo "${err.verbo}", ${err.pronombres}: respuesta correcta "${err.respuestaCorrecta}", tú escribiste "${err.respuestaUsuario}";
+          li.textContent = `Verbo "${err.verbo}" (${err.tiempo}), ${err.pronombres}: respuesta correcta "${err.respuestaCorrecta}", tú escribiste "${err.respuestaUsuario}"`;
           errorList.appendChild(li);
         });
       }
@@ -583,6 +653,7 @@
         menuSection.classList.add('hidden');
         exerciseSection.classList.add('hidden');
         errorsSection.classList.add('hidden');
+        studySection.classList.add('hidden'); // Asegurarse de ocultar la sección de estudio
       }
     });
   </script>
