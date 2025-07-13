@@ -391,7 +391,7 @@ async function loginUser(event) {
 
     try {
         await auth.signInWithEmailAndPassword(email, password);
-        // Si el login es exitoso, onAuthStateChanged manejará la visibilidad
+        // onAuthStateChanged ahora maneja la visibilidad
         console.log('Inicio de sesión exitoso:', email);
         loginForm.reset(); // Limpiar el formulario
     } catch (error) {
@@ -405,7 +405,7 @@ async function loginUser(event) {
 async function registerUser(event) {
     event.preventDefault();
     registerFeedback.textContent = '';
-    const name = document.getElementById('registerName').value.trim(); // Se puede guardar si se desea
+    const name = document.getElementById('registerName').value.trim();
     const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value.trim();
     const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
@@ -425,20 +425,12 @@ async function registerUser(event) {
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         const user = userCredential.user;
 
-        // Guardar el nombre de usuario (si se introduce) en Firestore junto al UID
-        // Esto es opcional y solo si quieres guardar el nombre.
-        if (name) {
-            await db.collection('users').doc(user.uid).set({
-                email: user.email,
-                name: name,
-                errors: {} // Inicializar errores vacíos para el nuevo usuario
-            });
-        } else {
-            await db.collection('users').doc(user.uid).set({
-                email: user.email,
-                errors: {} // Inicializar errores vacíos para el nuevo usuario
-            });
-        }
+        // Crear el documento de usuario en Firestore con errores iniciales vacíos
+        await db.collection('users').doc(user.uid).set({
+            email: user.email,
+            name: name, // Se guarda el nombre si se introdujo
+            errors: {} // Inicializar errores vacíos para el nuevo usuario
+        });
         
         console.log('Registro exitoso:', email);
         registerFeedback.textContent = '¡Registro exitoso! Por favor, inicia sesión.';
@@ -494,6 +486,7 @@ async function checkAnswer() {
     errors[currentKey] = (errors[currentKey] || 0) + 1;
     if (auth.currentUser) { // Asegurarse de que hay un usuario logueado
         try {
+            // Usar update para solo cambiar el campo 'errors' sin afectar otros
             await db.collection('users').doc(auth.currentUser.uid).update({
                 errors: errors // Guardar el objeto de errores completo
             });
@@ -592,6 +585,9 @@ auth.onAuthStateChanged(async (user) => {
     if (user) {
         // Usuario logueado: cargar errores y mostrar el contenido principal
         console.log('Usuario autenticado:', user.email, 'UID:', user.uid);
+        streak = 0; // Reiniciar racha cuando un usuario se autentica
+        streakElement.textContent = streak;
+
         try {
             const userDoc = await db.collection('users').doc(user.uid).get();
             if (userDoc.exists && userDoc.data().errors) {
@@ -599,29 +595,31 @@ auth.onAuthStateChanged(async (user) => {
                 console.log('Errores cargados de Firestore:', errors);
             } else {
                 errors = {}; // Si no hay documento o no hay errores, inicializar vacío
-                console.log('No se encontraron errores para este usuario o documento, inicializando vacío.');
+                // Y crear/asegurar que el documento del usuario existe con un campo de errores.
+                await db.collection('users').doc(user.uid).set({
+                    errors: {} // Inicializar o actualizar el campo de errores
+                }, { merge: true }); // 'merge: true' es crucial para no sobrescribir otros campos del usuario
+                console.log('Usuario y errores inicializados en Firestore (o campo errores creado).');
             }
         } catch (error) {
-            console.error('Error al cargar errores de Firestore:', error);
+            console.error('Error al cargar/inicializar errores de Firestore:', error);
             errors = {}; // En caso de error, inicializar vacío para no bloquear la app
         }
         
+        // Una vez que los errores están cargados, mostrar la aplicación principal
         authSection.classList.add('hidden');
         mainContent.classList.remove('hidden');
-        // Opcional: Reiniciar la racha si quieres que sea por sesión, no persistente
-        streak = 0;
-        streakElement.textContent = streak;
 
     } else {
-        // Usuario no logueado: mostrar la sección de autenticación
+        // Usuario no logueado: resetear errores y racha, y mostrar la sección de autenticación
+        errors = {}; // Limpiar errores locales si no hay usuario
+        streak = 0; // Resetear racha
+        streakElement.textContent = streak;
+
+        // Ocultar contenido principal y mostrar sección de autenticación
         authSection.classList.remove('hidden');
         mainContent.classList.add('hidden');
-        console.log('Usuario no autenticado.');
-        // Asegurarse de que el formulario de login esté visible por defecto
         showLogin();
-        errors = {}; // Limpiar errores locales si no hay usuario
-        streak = 0; // Reiniciar racha
-        streakElement.textContent = streak;
     }
 });
 
