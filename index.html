@@ -215,7 +215,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script> <script>
     const firebaseConfig = {
       apiKey: "AIzaSyB8-aTOwO8w21ig0L21kfEded05ewEG3Wc",
       authDomain: "verboseuskeraapp.firebaseapp.com",
@@ -227,6 +227,7 @@
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const db = firebase.firestore(); // Nuevo: Inicializar Firestore
   </script>
 </head>
 <body>
@@ -336,7 +337,7 @@ const s_past = {
 let currentSet = {};
 let currentKey = '';
 let streak = 0;
-let errors = JSON.parse(localStorage.getItem('verbErrors')) || {}; // Usar un nombre más específico para evitar conflictos
+let errors = {}; // Ahora se cargará desde Firestore
 
 // Referencias a elementos del DOM
 const authSection = document.getElementById('auth-section');
@@ -345,7 +346,7 @@ const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const loginFeedback = document.getElementById('loginFeedback');
 const registerFeedback = document.getElementById('registerFeedback');
-const menuSection = document.getElementById('menu'); // Asegúrate de tener este ID en tu HTML
+const menuSection = document.getElementById('menu');
 const exerciseSection = document.getElementById('exercise');
 const questionElement = document.getElementById('question');
 const answerInput = document.getElementById('answer');
@@ -396,15 +397,15 @@ async function loginUser(event) {
     } catch (error) {
         console.error('Error al iniciar sesión:', error.code, error.message);
         loginFeedback.textContent = `Error: ${error.message}`;
-        loginFeedback.className = 'auth-feedback error'; // Asegurarse de que el estilo de error se aplique
+        loginFeedback.className = 'auth-feedback error';
     }
-    return false; // Prevenir el envío tradicional del formulario
+    return false;
 }
 
 async function registerUser(event) {
     event.preventDefault();
     registerFeedback.textContent = '';
-    // const name = document.getElementById('registerName').value.trim(); // Si se guarda en BD externa
+    const name = document.getElementById('registerName').value.trim(); // Se puede guardar si se desea
     const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value.trim();
     const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
@@ -421,18 +422,35 @@ async function registerUser(event) {
     }
 
     try {
-        await auth.createUserWithEmailAndPassword(email, password);
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // Guardar el nombre de usuario (si se introduce) en Firestore junto al UID
+        // Esto es opcional y solo si quieres guardar el nombre.
+        if (name) {
+            await db.collection('users').doc(user.uid).set({
+                email: user.email,
+                name: name,
+                errors: {} // Inicializar errores vacíos para el nuevo usuario
+            });
+        } else {
+            await db.collection('users').doc(user.uid).set({
+                email: user.email,
+                errors: {} // Inicializar errores vacíos para el nuevo usuario
+            });
+        }
+        
         console.log('Registro exitoso:', email);
         registerFeedback.textContent = '¡Registro exitoso! Por favor, inicia sesión.';
         registerFeedback.className = 'auth-feedback correct';
-        registerForm.reset(); // Limpiar el formulario
-        showLogin(); // Mostrar el formulario de login después del registro
+        registerForm.reset();
+        showLogin();
     } catch (error) {
         console.error('Error al registrar:', error.code, error.message);
         registerFeedback.textContent = `Error: ${error.message}`;
         registerFeedback.className = 'auth-feedback error';
     }
-    return false; // Prevenir el envío tradicional del formulario
+    return false;
 }
 
 function logout() {
@@ -453,29 +471,43 @@ function startExercise(type) {
   nextQuestion();
 }
 
-function nextQuestion() {
+async function nextQuestion() {
   const keys = Object.keys(currentSet);
   currentKey = keys[Math.floor(Math.random() * keys.length)];
   questionElement.textContent = `Conjuga: ${currentKey.replace(',', ', ')}`;
   answerInput.value = '';
   feedbackElement.textContent = '';
-  feedbackElement.className = ''; // Limpiar clases
+  feedbackElement.className = '';
 }
 
-function checkAnswer() {
+async function checkAnswer() {
   const input = answerInput.value.trim().toLowerCase();
   const correct = currentSet[currentKey].toLowerCase();
 
   if (input === correct) {
     streak++;
     feedbackElement.textContent = '✅ ¡Respuesta correcta!';
-    feedbackElement.className = 'feedback correct'; // Asegurar clase 'feedback'
+    feedbackElement.className = 'feedback correct';
   } else {
     streak = 0;
+    // Actualizar errores y guardar en Firestore
     errors[currentKey] = (errors[currentKey] || 0) + 1;
-    localStorage.setItem('verbErrors', JSON.stringify(errors)); // Guardar errores
+    if (auth.currentUser) { // Asegurarse de que hay un usuario logueado
+        try {
+            await db.collection('users').doc(auth.currentUser.uid).update({
+                errors: errors // Guardar el objeto de errores completo
+            });
+            console.log('Errores guardados en Firestore.');
+        } catch (error) {
+            console.error('Error al guardar errores en Firestore:', error);
+            // Podrías añadir un mensaje al usuario si el guardado falla
+        }
+    } else {
+        console.warn('No hay usuario autenticado, errores no se guardarán en Firestore.');
+    }
+    
     feedbackElement.textContent = `❌ Incorrecto. La respuesta era: ${correct}`;
-    feedbackElement.className = 'feedback incorrect'; // Asegurar clase 'feedback'
+    feedbackElement.className = 'feedback incorrect';
   }
   streakElement.textContent = streak;
 }
@@ -490,12 +522,13 @@ function returnToMenu() {
 function showErrors() {
   const errorList = document.getElementById('errorList');
   errorList.innerHTML = '';
-  const sorted = Object.entries(errors).sort((a, b) => b[1] - a[1]); // Ordenar por cantidad de errores
+  // Convertir el objeto errors a un array para poder ordenar y mostrar
+  const sorted = Object.entries(errors).sort((a, b) => b[1] - a[1]);
   
   if (sorted.length === 0) {
       errorList.innerHTML = '<li>¡No has cometido errores aún!</li>';
   } else {
-      sorted.slice(0, 5).forEach(([key, count]) => { // Mostrar top 5 errores
+      sorted.slice(0, 5).forEach(([key, count]) => {
           const li = document.createElement('li');
           li.textContent = `"${key.replace(',', ', ')}": ${count} veces`;
           errorList.appendChild(li);
@@ -555,13 +588,30 @@ function generateTable(data, containerId) {
 }
 
 // --- Inicialización: Comprobar estado de autenticación al cargar ---
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async (user) => {
     if (user) {
-        // Usuario logueado: mostrar el contenido principal
+        // Usuario logueado: cargar errores y mostrar el contenido principal
+        console.log('Usuario autenticado:', user.email, 'UID:', user.uid);
+        try {
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists && userDoc.data().errors) {
+                errors = userDoc.data().errors;
+                console.log('Errores cargados de Firestore:', errors);
+            } else {
+                errors = {}; // Si no hay documento o no hay errores, inicializar vacío
+                console.log('No se encontraron errores para este usuario o documento, inicializando vacío.');
+            }
+        } catch (error) {
+            console.error('Error al cargar errores de Firestore:', error);
+            errors = {}; // En caso de error, inicializar vacío para no bloquear la app
+        }
+        
         authSection.classList.add('hidden');
         mainContent.classList.remove('hidden');
-        console.log('Usuario autenticado:', user.email);
-        // Opcional: Cargar errores del usuario si los tuvieras en una BD
+        // Opcional: Reiniciar la racha si quieres que sea por sesión, no persistente
+        streak = 0;
+        streakElement.textContent = streak;
+
     } else {
         // Usuario no logueado: mostrar la sección de autenticación
         authSection.classList.remove('hidden');
@@ -569,13 +619,14 @@ auth.onAuthStateChanged(user => {
         console.log('Usuario no autenticado.');
         // Asegurarse de que el formulario de login esté visible por defecto
         showLogin();
+        errors = {}; // Limpiar errores locales si no hay usuario
+        streak = 0; // Reiniciar racha
+        streakElement.textContent = streak;
     }
 });
 
 // Generar tablas de estudio al cargar por primera vez (aunque estén ocultas)
-// O podrías llamarlas solo cuando showStudy() se ejecuta
 document.addEventListener('DOMContentLoaded', generateTables);
-
 </script>
 
 </body>
