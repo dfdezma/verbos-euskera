@@ -183,31 +183,56 @@
     const auth = firebase.auth();
   </script>
 </head>
-  <section id="study" class="hidden" aria-live="polite" style="max-width: 600px; margin: auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px;">
-  <h2>Tabla de Conjugaciones</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Pronombres</th>
-        <th>Presente (izan)</th>
-        <th>Pasado (izan)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>nik → zuri</td><td>dizut</td><td>nizon</td></tr>
-      <tr><td>nik → hari</td><td>diot</td><td>nizon</td></tr>
-      <tr><td>nik → zuei</td><td>dizuet</td><td>nizon</td></tr>
-      <tr><td>nik → haiei</td><td>diet</td><td>nizon</td></tr>
-      <tr><td>zuk → niri</td><td>didazu</td><td>zinen</td></tr>
-      <tr><td>zuk → hari</td><td>diozu</td><td>zinen</td></tr>
-      <tr><td>zuk → guri</td><td>diguzu</td><td>ginen</td></tr>
-      <tr><td>zuk → haiei</td><td>diezu</td><td>zinen</td></tr>
-      <tr><td>hark → niri</td><td>dit</td><td>zen</td></tr>
-      <tr><td>hark → zuri</td><td>dit</td><td>zen</td></tr>
-    </tbody>
-  </table>
-  <button onclick="showMenu()" class="secondary">Volver al Menú</button>
-</section>
+  <section id="study" class="hidden" aria-live="polite" style="max-width: 700px; margin: auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px;">
+    <h2>Tabla de Conjugaciones: Presente y Pasado</h2>
+  
+    <h3>Presente (izan)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>→ / ↓</th>
+          <th>niri</th>
+          <th>zuri</th>
+          <th>hari</th>
+          <th>guri</th>
+          <th>zuei</th>
+          <th>haiei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>nik</th>   <td></td>     <td>dizut</td> <td>diot</td>   <td></td>     <td>dizuet</td> <td>diet</td></tr>
+        <tr><th>zuk</th>   <td>didazu</td><td></td>     <td>diozu</td> <td>diguzu</td><td></td>       <td>diezu</td></tr>
+        <tr><th>hark</th>  <td>dit</td>   <td>dit</td>   <td></td>     <td></td>     <td></td>       <td></td></tr>
+        <tr><th>gu</th>    <td></td>     <td></td>     <td></td>     <td></td>     <td></td>       <td></td></tr>
+        <tr><th>haiek</th> <td></td>     <td></td>     <td></td>     <td></td>     <td></td>       <td></td></tr>
+      </tbody>
+    </table>
+  
+    <h3>Pasado (izan)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>→ / ↓</th>
+          <th>niri</th>
+          <th>zuri</th>
+          <th>hari</th>
+          <th>guri</th>
+          <th>zuei</th>
+          <th>haiei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><th>nik</th>   <td></td> <td>nuen</td> <td>nuen</td> <td></td> <td>nuen</td> <td>nuen</td></tr>
+        <tr><th>zuk</th>   <td>zinen</td> <td></td> <td>zinen</td> <td>ginen</td> <td></td> <td>zinen</td></tr>
+        <tr><th>hark</th>  <td>zen</td> <td>zen</td> <td></td> <td></td> <td></td> <td></td></tr>
+        <tr><th>gu</th>    <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr>
+        <tr><th>haiek</th> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr>
+      </tbody>
+    </table>
+  
+    <button onclick="showMenu()" class="secondary" style="margin-top: 15px;">Volver al Menú</button>
+  </section>
+
 
 <body>
 
@@ -252,7 +277,7 @@
     <p>¡Bienvenido! Selecciona una opción:</p>
     <button onclick="startExercise()">Practicar Conjugaciones</button>
     <button onclick="showErrors()">Mostrar Errores</button>
-    <button onclick="showStudy()">Ver Tabla de Conjugaciones</button> <!-- NUEVO BOTÓN -->
+    <button onclick="showStudy()">Ver Tabla de Conjugaciones</button>
     <button onclick="logout()">Cerrar sesión</button>
   </section>
 
