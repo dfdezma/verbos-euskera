@@ -183,6 +183,32 @@
     const auth = firebase.auth();
   </script>
 </head>
+  <section id="study" class="hidden" aria-live="polite" style="max-width: 600px; margin: auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 20px;">
+  <h2>Tabla de Conjugaciones</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Pronombres</th>
+        <th>Presente (izan)</th>
+        <th>Pasado (izan)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>nik → zuri</td><td>dizut</td><td>nizon</td></tr>
+      <tr><td>nik → hari</td><td>diot</td><td>nizon</td></tr>
+      <tr><td>nik → zuei</td><td>dizuet</td><td>nizon</td></tr>
+      <tr><td>nik → haiei</td><td>diet</td><td>nizon</td></tr>
+      <tr><td>zuk → niri</td><td>didazu</td><td>zinen</td></tr>
+      <tr><td>zuk → hari</td><td>diozu</td><td>zinen</td></tr>
+      <tr><td>zuk → guri</td><td>diguzu</td><td>ginen</td></tr>
+      <tr><td>zuk → haiei</td><td>diezu</td><td>zinen</td></tr>
+      <tr><td>hark → niri</td><td>dit</td><td>zen</td></tr>
+      <tr><td>hark → zuri</td><td>dit</td><td>zen</td></tr>
+    </tbody>
+  </table>
+  <button onclick="showMenu()" class="secondary">Volver al Menú</button>
+</section>
+
 <body>
 
   <h1>Práctica de Verbos en Euskera</h1>
@@ -226,8 +252,10 @@
     <p>¡Bienvenido! Selecciona una opción:</p>
     <button onclick="startExercise()">Practicar Conjugaciones</button>
     <button onclick="showErrors()">Mostrar Errores</button>
+    <button onclick="showStudy()">Ver Tabla de Conjugaciones</button> <!-- NUEVO BOTÓN -->
     <button onclick="logout()">Cerrar sesión</button>
   </section>
+
 
   <section id="exercise" class="hidden" aria-live="polite">
     <h2>Ejercicio de Conjugación</h2>
@@ -264,6 +292,19 @@
     const nextButton = document.getElementById('nextButton');
     const errorsSection = document.getElementById('errors');
     const errorList = document.getElementById('errorList');
+    const studySection = document.getElementById('study');
+
+    function showStudy() {
+      menuSection.classList.add('hidden');
+      exerciseSection.classList.add('hidden');
+      errorsSection.classList.add('hidden');
+      studySection.classList.remove('hidden');
+    }
+    
+    function hideStudy() {
+      studySection.classList.add('hidden');
+    }
+
 
     // Firebase auth handlers
     function loginUser(e) {
